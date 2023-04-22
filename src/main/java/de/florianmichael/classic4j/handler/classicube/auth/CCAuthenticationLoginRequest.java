@@ -18,7 +18,6 @@
 package de.florianmichael.classic4j.handler.classicube.auth;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationRequest;
 import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAuthenticationData;
@@ -29,17 +28,12 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-public class CCAuthenticationLoginRequest extends CCAuthenticationRequest {
-    private final CCAuthenticationData authenticationData;
+public class CCAuthenticationLoginRequest {
 
-    public CCAuthenticationLoginRequest(CCAuthenticationResponse previousResponse, CCAccount account, String loginCode) {
-        super(account);
-        this.authenticationData = new CCAuthenticationData(account.username(), account.password(), previousResponse.token, loginCode);
-    }
-
-    @Override
-    public CompletableFuture<CCAuthenticationResponse> send() {
+    public static CompletableFuture<CCAuthenticationResponse> send(final CCAccount account, final CCAuthenticationResponse previousResponse, final String loginCode) {
         return CompletableFuture.supplyAsync(() -> {
+            final CCAuthenticationData authenticationData = new CCAuthenticationData(account.username(), account.password(), previousResponse.token, loginCode);
+
             final String requestBody = WebRequests.createRequestBody(
                     new Pair<>("username", authenticationData.username()),
                     new Pair<>("password", authenticationData.password()),
@@ -47,14 +41,14 @@ public class CCAuthenticationLoginRequest extends CCAuthenticationRequest {
                     new Pair<>("login_code", authenticationData.loginCode())
             );
 
-            final HttpRequest request = buildWithCookies(HttpRequest.newBuilder()
+            final HttpRequest request = WebRequests.buildWithCookies(account.cookieStore, HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .uri(ClassiCubeHandler.AUTHENTICATION_URI)
                     .header("content-type", "application/x-www-form-urlencoded"));
 
             final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            this.updateCookies(response);
+            WebRequests.updateCookies(account.cookieStore, response);
 
             final String responseBody = response.body();
             return CCAuthenticationResponse.fromJson(responseBody);

@@ -15,23 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.florianmichael.classic4j.handler;
 
 import de.florianmichael.classic4j.Classic4J;
+import de.florianmichael.classic4j.handler.betacraft.BCServerListRequest;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
-import de.florianmichael.classic4j.util.Pair;
-import de.florianmichael.classic4j.util.WebRequests;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URI;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.net.URL;
 import java.security.MessageDigest;
-import java.util.concurrent.CompletableFuture;
+import java.util.Formatter;
+import java.util.Scanner;
 import java.util.function.Consumer;
 
 public class BetaCraftHandler {
@@ -44,49 +40,38 @@ public class BetaCraftHandler {
         this.classic4J = classic4J;
     }
 
-    public void requestServerListAsync(final Consumer<BCServerList> complete) {
-        CompletableFuture.runAsync(() -> requestServerList(complete));
-    }
-
     public void requestServerList(final Consumer<BCServerList> complete) {
-        Document document;
-
-        try {
-            document = Jsoup.connect(SERVER_LIST.toString())
-                    .userAgent(classic4J.userAgent)
-                    .header("Accept", "text/html, image/gif, image/jpeg, ; q=.2,/*; q=.2")
-                    .post()
-                    .quirksMode(Document.QuirksMode.quirks);
-        } catch (IOException e) {
-            complete.accept(null);
-            throw new RuntimeException("Failed to get Jsoup document from server list url", e);
-        }
-
-        complete.accept(BCServerList.fromDocument(document));
+        requestServerList(complete, Throwable::printStackTrace);
     }
 
-    public void requestMPPassAsync(final String username, final String ip, final int port, final Consumer<String> complete) {
-        CompletableFuture.runAsync(() -> complete.accept(requestMPPass(username, ip, port)));
+    public void requestServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+        BCServerListRequest.send().whenComplete((bcServerList, throwable) -> {
+            if (throwable != null) {
+                throwableConsumer.accept(throwable);
+                return;
+            }
+            complete.accept(bcServerList);
+        });
     }
 
+    // this API is really outdated
     public String requestMPPass(final String username, final String ip, final int port) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
 
             this.classic4J.externalInterface.sendAuthRequest(sha1(server.getBytes()));
-            final String body = WebRequests.createRequestBody(new Pair<>("user", username), new Pair<>("server", server));
 
-            final HttpRequest request = HttpRequest.
-                    newBuilder().
-                    POST(HttpRequest.BodyPublishers.ofString(body)).
-                    uri(GET_MP_PASS).
-                    build();
+            final InputStream connection = new URL(GET_MP_PASS + "?user=" + username + "&server=" + server).openStream();
+            Scanner scanner = new Scanner(connection);
+            StringBuilder response = new StringBuilder();
+            while (scanner.hasNext()) {
+                response.append(scanner.next());
+            }
+            connection.close();
 
-            final String response = WebRequests.HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).body();
+            if (response.toString().contains("FAILED") || response.toString().contains("SERVER NOT FOUND")) return "0";
 
-            if (response.contains("FAILED") || response.contains("SERVER NOT FOUND")) return "0";
-
-            return response;
+            return response.toString();
         } catch (Throwable t) {
             t.printStackTrace();
             return "0";
@@ -95,7 +80,12 @@ public class BetaCraftHandler {
 
     private String sha1(final byte[] input) {
         try {
-            return new String(MessageDigest.getInstance("SHA-1").digest(input));
+            Formatter formatter = new Formatter();
+            final byte[] hash = MessageDigest.getInstance("SHA-1").digest(input);
+            for (byte b : hash) {
+                formatter.format("%02x", b);
+            }
+            return formatter.toString();
         } catch (Exception e) {
             return null;
         }

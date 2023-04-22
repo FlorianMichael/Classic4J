@@ -45,10 +45,8 @@ betaCraftHandler.requestServerList(bcServerList -> {
     System.out.println(bcServerList.serversOfVersion(BCVersion.ALPHA).size());
     System.out.println(bcServerList.serversWithOnlineMode(false)); // offline mode
 });
-        
-betaCraftHandler.requestMPPass("lyzev", "kevinzockt.de", 25565, s -> {
-    // s is the MP Pass
-});
+
+final String mpPass = betaCraftHandler.requestMPPass("lyzev", "kevinzockt.de", 25565);
 ```
 
 ### ClassiCube
@@ -57,7 +55,7 @@ Classic4J allows you to authenticate with ClassiCube and retrieve the server lis
 final ClassiCubeHandler classiCubeHandler = classic4J.classiCubeHandler();
 
 final CCAccount account = new CCAccount("EnZaXD", "example");
-classiCubeHandler.authenticate(account, null, new LoginProcessHandler() {
+classiCubeHandler.requestAuthentication(account, null, new LoginProcessHandler() {
     @Override
     public void handleMfa(CCAccount account) {
         // Called when the account requires to be verified via MFA

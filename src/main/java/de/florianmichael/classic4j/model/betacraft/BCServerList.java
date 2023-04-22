@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.florianmichael.classic4j.model.betacraft;
 
 import org.jsoup.nodes.Document;
@@ -26,13 +25,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-// Based on this code: https://github.com/allinkdev/BetacraftServerListParser
-public class BCServerList {
-    private final List<BCServerInfo> servers;
-
-    public BCServerList(List<BCServerInfo> servers) {
-        this.servers = servers;
-    }
+public record BCServerList(List<BCServerInfo> servers) {
 
     public static BCServerList fromDocument(final Document document) {
         final List<BCServerInfo> servers = new LinkedList<>();
@@ -123,6 +116,7 @@ public class BCServerList {
         return new BCServerList(servers);
     }
 
+    @Override
     public List<BCServerInfo> servers() {
         return Collections.unmodifiableList(this.servers);
     }

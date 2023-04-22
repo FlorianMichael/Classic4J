@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.florianmichael.classic4j.model.classicube;
 
 import com.google.gson.annotations.SerializedName;
@@ -49,51 +48,51 @@ public class CCServerInfo {
         this.mpPass = mpPass;
     }
 
-    public String getHash() {
+    public String hash() {
         return hash;
     }
 
-    public int getMaxPlayers() {
+    public int maxPlayers() {
         return maxPlayers;
     }
 
-    public String getName() {
+    public String name() {
         return name;
     }
 
-    public int getPlayers() {
+    public int players() {
         return players;
     }
 
-    public String getSoftware() {
+    public String software() {
         return software;
     }
 
-    public long getUptime() {
+    public long uptime() {
         return uptime;
     }
 
-    public String getCountryCode() {
+    public String countryCode() {
         return countryCode;
     }
 
-    public boolean isWeb() {
+    public boolean web() {
         return web;
     }
 
-    public boolean isFeatured() {
+    public boolean featured() {
         return featured;
     }
 
-    public String getIp() {
+    public String ip() {
         return ip;
     }
 
-    public int getPort() {
+    public int port() {
         return port;
     }
 
-    public String getMpPass() {
+    public String mpPass() {
         return mpPass;
     }
 

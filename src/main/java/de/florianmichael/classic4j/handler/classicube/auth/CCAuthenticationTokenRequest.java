@@ -18,7 +18,6 @@
 package de.florianmichael.classic4j.handler.classicube.auth;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationRequest;
 import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.classic4j.util.WebRequests;
@@ -27,20 +26,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-public class CCAuthenticationTokenRequest extends CCAuthenticationRequest {
+public class CCAuthenticationTokenRequest {
 
-    public CCAuthenticationTokenRequest(CCAccount account) {
-        super(account);
-    }
-
-    @Override
-    public CompletableFuture<CCAuthenticationResponse> send() {
+    public static CompletableFuture<CCAuthenticationResponse> send(final CCAccount account) {
         return CompletableFuture.supplyAsync(() -> {
             final HttpRequest request = HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.AUTHENTICATION_URI).build();
 
             final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            this.updateCookies(response);
+            WebRequests.updateCookies(account.cookieStore, response);
             final String responseBody = response.body();
             return CCAuthenticationResponse.fromJson(responseBody);
         });

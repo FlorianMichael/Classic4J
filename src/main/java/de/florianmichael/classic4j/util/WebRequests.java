@@ -15,11 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.florianmichael.classic4j.util;
+
+import de.florianmichael.classic4j.model.CookieStore;
 
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 public class WebRequests {
@@ -30,14 +33,23 @@ public class WebRequests {
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < parameters.length; i++) {
             final Pair<String, String> parameter = parameters[i];
+            if (parameter.key() == null || parameter.value() == null) continue;
 
-            builder.append(parameter.key).append("=").
-                    append(URLEncoder.encode(parameter.value, StandardCharsets.UTF_8));
+            builder.append(parameter.key()).append("=").
+                    append(URLEncoder.encode(parameter.value(), StandardCharsets.UTF_8));
 
             if (i != parameters.length - 1) {
                 builder.append("&");
             }
         }
         return builder.toString();
+    }
+
+    public static HttpRequest buildWithCookies(final CookieStore cookieStore, final HttpRequest.Builder builder) {
+        return cookieStore.appendCookies(builder).build();
+    }
+
+    public static void updateCookies(final CookieStore cookieStore, final HttpResponse<?> response) {
+        cookieStore.mergeFromResponse(response);
     }
 }

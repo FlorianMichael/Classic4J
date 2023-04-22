@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.florianmichael.classic4j;
 
 import de.florianmichael.classic4j.api.ExternalInterface;
@@ -26,13 +25,11 @@ public class Classic4J {
     private final BetaCraftHandler betaCraftHandler = new BetaCraftHandler(this);
     private final ClassiCubeHandler classiCubeHandler = new ClassiCubeHandler(this);
 
-    public String userAgent = "Java/" + Runtime.version();
     public ExternalInterface externalInterface = serverId -> {
         // Not implemented
     };
 
-    public Classic4J(final String userAgent, final ExternalInterface externalInterface) {
-        if (userAgent != null) this.userAgent = userAgent;
+    public Classic4J(final ExternalInterface externalInterface) {
         if (externalInterface != null) this.externalInterface = externalInterface;
     }
 

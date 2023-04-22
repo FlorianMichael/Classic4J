@@ -15,15 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.florianmichael.classic4j.util;
 
-public class Pair<K, V> {
-    public final K key;
-    public final V value;
-
-    public Pair(final K key, final V value) {
-        this.key = key;
-        this.value = value;
-    }
+public record Pair<K, V>(K key, V value) {
 }

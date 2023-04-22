@@ -18,7 +18,6 @@
 package de.florianmichael.classic4j.handler.classicube.server;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.ClassiCubeRequest;
 import de.florianmichael.classic4j.model.classicube.CCServerList;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.classic4j.util.WebRequests;
@@ -29,28 +28,22 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class CCServerInfoRequest extends ClassiCubeRequest {
-    private final List<String> serverHashes;
+public class CCServerInfoRequest {
 
-    public CCServerInfoRequest(final CCAccount account, final List<String> serverHashes) {
-        super(account);
-        this.serverHashes = serverHashes;
-    }
-
-    private URI generateUri() {
+    private static URI generateUri(final List<String> serverHashes) {
         final String joined = String.join(",", serverHashes);
 
         return ClassiCubeHandler.SERVER_INFO_URI.resolve(joined);
     }
 
-    public CompletableFuture<CCServerList> send() {
+    public static CompletableFuture<CCServerList> send(final CCAccount account, final List<String> serverHashes) {
         return CompletableFuture.supplyAsync(() -> {
-            final URI uri = this.generateUri();
+            final URI uri = generateUri(serverHashes);
 
-            final HttpRequest request = this.buildWithCookies(HttpRequest.newBuilder().GET().uri(uri));
+            final HttpRequest request = WebRequests.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(uri));
             final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            updateCookies(response);
+            WebRequests.updateCookies(account.cookieStore, response);
 
             final String body = response.body();
 
