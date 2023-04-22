@@ -21,9 +21,10 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.FlorianMichael:Classic4J:1.0.0"
+    implementation "com.github.FlorianMichael:Classic4J:1.1.0"
 }
 ```
+This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path
 
 ## Example usage
 ### Create instance
