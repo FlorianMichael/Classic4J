@@ -32,7 +32,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.MessageDigest;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 public class BetaCraftHandler {
@@ -45,26 +44,32 @@ public class BetaCraftHandler {
         this.classic4J = classic4J;
     }
 
-    public void requestServerList(final Consumer<BCServerList> complete) {
-        CompletableFuture.runAsync(() -> {
-            Document document;
-
-            try {
-                document = Jsoup.connect(SERVER_LIST.toString())
-                        .userAgent(classic4J.userAgent)
-                        .header("Accept", "text/html, image/gif, image/jpeg, ; q=.2,/*; q=.2")
-                        .post()
-                        .quirksMode(Document.QuirksMode.quirks);
-            } catch (IOException e) {
-                complete.accept(null);
-                throw new RuntimeException("Failed to get Jsoup document from server list url", e);
-            }
-
-            complete.accept(BCServerList.fromDocument(document));
-        });
+    public void requestServerListAsync(final Consumer<BCServerList> complete) {
+        CompletableFuture.runAsync(() -> requestServerList(complete));
     }
 
-    public void requestMPPass(final String username, final String ip, final int port, final Consumer<String> complete) {
+    public void requestServerList(final Consumer<BCServerList> complete) {
+        Document document;
+
+        try {
+            document = Jsoup.connect(SERVER_LIST.toString())
+                    .userAgent(classic4J.userAgent)
+                    .header("Accept", "text/html, image/gif, image/jpeg, ; q=.2,/*; q=.2")
+                    .post()
+                    .quirksMode(Document.QuirksMode.quirks);
+        } catch (IOException e) {
+            complete.accept(null);
+            throw new RuntimeException("Failed to get Jsoup document from server list url", e);
+        }
+
+        complete.accept(BCServerList.fromDocument(document));
+    }
+
+    public void requestMPPassAsync(final String username, final String ip, final int port, final Consumer<String> complete) {
+        CompletableFuture.runAsync(() -> complete.accept(requestMPPass(username, ip, port)));
+    }
+
+    public String requestMPPass(final String username, final String ip, final int port) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
 
@@ -77,22 +82,14 @@ public class BetaCraftHandler {
                     uri(GET_MP_PASS).
                     build();
 
-            AtomicBoolean success = new AtomicBoolean(false);
-            WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).whenComplete((stringHttpResponse, throwable) -> {
-                if (throwable != null) {
-                    throwable.printStackTrace();
-                    return;
-                }
+            final String response = WebRequests.HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString()).body();
 
-                complete.accept(stringHttpResponse.body());
-                success.set(true);
-            });
-            if (!success.get()) {
-                complete.accept("0");
-            }
+            if (response.contains("FAILED") || response.contains("SERVER NOT FOUND")) return "0";
+
+            return response;
         } catch (Throwable t) {
             t.printStackTrace();
-            complete.accept("0");
+            return "0";
         }
     }
 
