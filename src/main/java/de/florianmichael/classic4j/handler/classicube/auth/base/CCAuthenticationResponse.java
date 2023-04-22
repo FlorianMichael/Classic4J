@@ -1,6 +1,6 @@
 /*
- * This file is part of ClassiCube4J - https://github.com/FlorianMichael/ClassiCube4J
- * Copyright (C) 2023 FlorianMichael/EnZaXD, Allink and contributors
+ * This file is part of Classic4J - https://github.com/FlorianMichael/Classic4J
+ * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,16 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.response.auth;
+package de.florianmichael.classic4j.handler.classicube.auth.base;
 
-import de.florianmichael.classic4j.handler.classicube.response.ClassiCubeResponse;
-import de.florianmichael.classic4j.model.classicube.CCError;
+import de.florianmichael.classic4j.handler.ClassiCubeHandler;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
 
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class CCAuthenticationResponse extends ClassiCubeResponse {
+public class CCAuthenticationResponse {
     public final String token;
     public final String username;
     public final boolean authenticated;
@@ -61,6 +61,6 @@ public class CCAuthenticationResponse extends ClassiCubeResponse {
     }
 
     public static CCAuthenticationResponse fromJson(final String json) {
-        return GSON.fromJson(json, CCAuthenticationResponse.class);
+        return ClassiCubeHandler.GSON.fromJson(json, CCAuthenticationResponse.class);
     }
 }

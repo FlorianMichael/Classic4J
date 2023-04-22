@@ -15,34 +15,46 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.request.server;
+package de.florianmichael.classic4j.handler.classicube.server;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.request.ClassiCubeRequest;
-import de.florianmichael.classic4j.handler.classicube.response.server.CCServerInfoResponse;
-import de.florianmichael.classic4j.model.classicube.CCAccount;
+import de.florianmichael.classic4j.handler.classicube.ClassiCubeRequest;
+import de.florianmichael.classic4j.model.classicube.CCServerList;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.classic4j.util.WebRequests;
 
+import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class ClassiCubeServerListRequest extends ClassiCubeRequest {
+public class CCServerInfoRequest extends ClassiCubeRequest {
+    private final List<String> serverHashes;
 
-    public ClassiCubeServerListRequest(CCAccount account) {
+    public CCServerInfoRequest(final CCAccount account, final List<String> serverHashes) {
         super(account);
+        this.serverHashes = serverHashes;
     }
 
-    public CompletableFuture<CCServerInfoResponse> send() {
-        return CompletableFuture.supplyAsync(() -> {
-            final HttpRequest request = this.buildWithCookies(HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.SERVER_LIST_INFO_URI));
+    private URI generateUri() {
+        final String joined = String.join(",", serverHashes);
 
+        return ClassiCubeHandler.SERVER_INFO_URI.resolve(joined);
+    }
+
+    public CompletableFuture<CCServerList> send() {
+        return CompletableFuture.supplyAsync(() -> {
+            final URI uri = this.generateUri();
+
+            final HttpRequest request = this.buildWithCookies(HttpRequest.newBuilder().GET().uri(uri));
             final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
             updateCookies(response);
 
             final String body = response.body();
-            return CCServerInfoResponse.fromJson(body);
+
+            return CCServerList.fromJson(body);
         });
     }
 }

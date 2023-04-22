@@ -1,6 +1,6 @@
 /*
- * This file is part of ClassiCube4J - https://github.com/FlorianMichael/ClassiCube4J
- * Copyright (C) 2023 FlorianMichael/EnZaXD, Allink and contributors
+ * This file is part of Classic4J - https://github.com/FlorianMichael/Classic4J
+ * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,11 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.request.auth;
+package de.florianmichael.classic4j.handler.classicube.auth.base;
 
-import de.florianmichael.classic4j.handler.classicube.request.ClassiCubeRequest;
-import de.florianmichael.classic4j.handler.classicube.response.auth.CCAuthenticationResponse;
-import de.florianmichael.classic4j.model.classicube.CCAccount;
+import de.florianmichael.classic4j.handler.classicube.ClassiCubeRequest;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 
 import java.util.concurrent.CompletableFuture;
 

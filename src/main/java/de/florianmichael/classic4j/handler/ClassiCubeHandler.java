@@ -18,16 +18,25 @@
 
 package de.florianmichael.classic4j.handler;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.florianmichael.classic4j.Classic4J;
-import de.florianmichael.classic4j.handler.classicube.ILoginProcessHandler;
-import de.florianmichael.classic4j.handler.classicube.request.auth.CCAuthenticationLoginRequest;
-import de.florianmichael.classic4j.handler.classicube.request.auth.CCAuthenticationTokenRequest;
-import de.florianmichael.classic4j.model.classicube.CCAccount;
+import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.handler.classicube.auth.CCAuthenticationLoginRequest;
+import de.florianmichael.classic4j.handler.classicube.auth.CCAuthenticationTokenRequest;
+import de.florianmichael.classic4j.handler.classicube.server.CCServerInfoRequest;
+import de.florianmichael.classic4j.handler.classicube.server.CCServerListRequest;
+import de.florianmichael.classic4j.model.classicube.CCServerList;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 
 import javax.security.auth.login.LoginException;
 import java.net.URI;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class ClassiCubeHandler {
+    public final static Gson GSON = new GsonBuilder().serializeNulls().create();
+
     public final static URI CLASSICUBE_ROOT_URI = URI.create("https://www.classicube.net");
 
     public final static URI AUTHENTICATION_URI = CLASSICUBE_ROOT_URI.resolve("/api/login/");
@@ -40,7 +49,33 @@ public class ClassiCubeHandler {
         this.classic4J = classic4J;
     }
 
-    public void login(final CCAccount account, final ILoginProcessHandler processHandler, final String loginCode) {
+    public void requestServerList(final CCAccount account, final Consumer<CCServerList> complete) {
+        final CCServerListRequest serverListRequest = new CCServerListRequest(account);
+        serverListRequest.send().whenComplete((ccServerList, throwable) -> {
+            if (throwable != null) {
+                classic4J.errorHandler.accept(throwable);
+                return;
+            }
+            complete.accept(ccServerList);
+        });
+    }
+
+    public void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete) {
+        requestServerInfo(account, List.of(serverHash), complete);
+    }
+
+    public void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete) {
+        final CCServerInfoRequest serverInfoRequest = new CCServerInfoRequest(account, serverHashes);
+        serverInfoRequest.send().whenComplete((ccServerList, throwable) -> {
+            if (throwable != null) {
+                classic4J.errorHandler.accept(throwable);
+                return;
+            }
+            complete.accept(ccServerList);
+        });
+    }
+
+    public void authenticate(final CCAccount account, final String loginCode, final LoginProcessHandler processHandler) {
         final CCAuthenticationTokenRequest initialTokenRequest = new CCAuthenticationTokenRequest(account);
         initialTokenRequest.send().whenComplete((initialTokenResponse, throwable) -> {
             if (throwable != null) {

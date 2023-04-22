@@ -15,34 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.request.auth;
+package de.florianmichael.classic4j.handler.classicube.server;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.response.auth.CCAuthenticationResponse;
-import de.florianmichael.classic4j.model.classicube.CCAccount;
+import de.florianmichael.classic4j.handler.classicube.ClassiCubeRequest;
+import de.florianmichael.classic4j.model.classicube.CCServerList;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.classic4j.util.WebRequests;
 
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-public class CCAuthenticationTokenRequest extends CCAuthenticationRequest {
-    private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+public class CCServerListRequest extends ClassiCubeRequest {
 
-    public CCAuthenticationTokenRequest(CCAccount account) {
+    public CCServerListRequest(CCAccount account) {
         super(account);
     }
 
-    @Override
-    public CompletableFuture<CCAuthenticationResponse> send() {
+    public CompletableFuture<CCServerList> send() {
         return CompletableFuture.supplyAsync(() -> {
-            final HttpRequest request = HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.AUTHENTICATION_URI).build();
+            final HttpRequest request = this.buildWithCookies(HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.SERVER_LIST_INFO_URI));
 
-            final HttpResponse<String> response = HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
+            final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            this.updateCookies(response);
-            final String responseBody = response.body();
-            return CCAuthenticationResponse.fromJson(responseBody);
+            updateCookies(response);
+
+            final String body = response.body();
+            return CCServerList.fromJson(body);
         });
     }
 }

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.classic4j.model.classicube;
+package de.florianmichael.classic4j.model.classicube.highlevel;
 
 public class CCAuthenticationData {
     private final String username;

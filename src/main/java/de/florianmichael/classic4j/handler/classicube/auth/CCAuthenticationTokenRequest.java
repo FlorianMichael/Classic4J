@@ -15,50 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.request.server;
+package de.florianmichael.classic4j.handler.classicube.auth;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.request.ClassiCubeRequest;
-import de.florianmichael.classic4j.handler.classicube.response.server.CCServerInfoResponse;
-import de.florianmichael.classic4j.model.classicube.CCAccount;
+import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationRequest;
+import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationResponse;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 import de.florianmichael.classic4j.util.WebRequests;
 
-import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-public class CCServerInfoRequest extends ClassiCubeRequest {
-    private final Set<String> serverHashes;
+public class CCAuthenticationTokenRequest extends CCAuthenticationRequest {
 
-    public CCServerInfoRequest(final CCAccount account, final String serverHash) {
-        this(account, Set.of(serverHash));
-    }
-
-    public CCServerInfoRequest(final CCAccount account, final Set<String> serverHashes) {
+    public CCAuthenticationTokenRequest(CCAccount account) {
         super(account);
-        this.serverHashes = serverHashes;
     }
 
-    private URI generateUri() {
-        final String joined = String.join(",", serverHashes);
-
-        return ClassiCubeHandler.SERVER_INFO_URI.resolve(joined);
-    }
-
-    public CompletableFuture<CCServerInfoResponse> send() {
+    @Override
+    public CompletableFuture<CCAuthenticationResponse> send() {
         return CompletableFuture.supplyAsync(() -> {
-            final URI uri = this.generateUri();
+            final HttpRequest request = HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.AUTHENTICATION_URI).build();
 
-            final HttpRequest request = this.buildWithCookies(HttpRequest.newBuilder().GET().uri(uri));
             final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            updateCookies(response);
-
-            final String body = response.body();
-
-            return CCServerInfoResponse.fromJson(body);
+            this.updateCookies(response);
+            final String responseBody = response.body();
+            return CCAuthenticationResponse.fromJson(responseBody);
         });
     }
 }

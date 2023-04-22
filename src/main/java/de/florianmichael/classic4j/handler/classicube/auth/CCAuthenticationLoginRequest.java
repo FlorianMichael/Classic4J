@@ -15,12 +15,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.request.auth;
+package de.florianmichael.classic4j.handler.classicube.auth;
 
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
-import de.florianmichael.classic4j.handler.classicube.response.auth.CCAuthenticationResponse;
-import de.florianmichael.classic4j.model.classicube.CCAccount;
-import de.florianmichael.classic4j.model.classicube.CCAuthenticationData;
+import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationRequest;
+import de.florianmichael.classic4j.handler.classicube.auth.base.CCAuthenticationResponse;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAuthenticationData;
 import de.florianmichael.classic4j.util.Pair;
 import de.florianmichael.classic4j.util.WebRequests;
 
@@ -30,10 +31,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class CCAuthenticationLoginRequest extends CCAuthenticationRequest {
     private final CCAuthenticationData authenticationData;
-
-    public CCAuthenticationLoginRequest(CCAuthenticationResponse previousResponse, CCAccount account) {
-        this(previousResponse, account, null);
-    }
 
     public CCAuthenticationLoginRequest(CCAuthenticationResponse previousResponse, CCAccount account, String loginCode) {
         super(account);
@@ -50,7 +47,7 @@ public class CCAuthenticationLoginRequest extends CCAuthenticationRequest {
                     new Pair<>("login_code", authenticationData.loginCode())
             );
 
-            final HttpRequest request = this.buildWithCookies(HttpRequest.newBuilder()
+            final HttpRequest request = buildWithCookies(HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .uri(ClassiCubeHandler.AUTHENTICATION_URI)
                     .header("content-type", "application/x-www-form-urlencoded"));

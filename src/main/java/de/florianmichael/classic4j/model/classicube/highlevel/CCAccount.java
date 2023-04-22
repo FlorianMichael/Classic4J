@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.classic4j.model.classicube;
+package de.florianmichael.classic4j.model.classicube.highlevel;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.model.CookieStore;

@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.florianmichael.classic4j.handler.classicube;
+package de.florianmichael.classic4j.api;
 
-import de.florianmichael.classic4j.model.classicube.CCAccount;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 
-public interface ILoginProcessHandler {
+public interface LoginProcessHandler {
 
     void handleMfa(final CCAccount account);
     void handleSuccessfulLogin(final CCAccount account);

@@ -45,7 +45,7 @@ public class BetaCraftHandler {
         this.classic4J = classic4J;
     }
 
-    public void requestBetaCraftServerList(final Consumer<BCServerList> complete) {
+    public void requestServerList(final Consumer<BCServerList> complete) {
         CompletableFuture.runAsync(() -> {
             Document document;
 
@@ -65,7 +65,7 @@ public class BetaCraftHandler {
         });
     }
 
-    public void requestBetaCraftMPPass(final String username, final String ip, final int port, final Consumer<String> complete) {
+    public void requestMPPass(final String username, final String ip, final int port, final Consumer<String> complete) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
 

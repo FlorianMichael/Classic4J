@@ -15,19 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package de.florianmichael.classic4j.handler.classicube;
 
-package de.florianmichael.classic4j.model.classicube;
+import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 
-public enum CCError {
-    TOKEN("Incorrect token. Is your ViaFabricPlus out of date?"),
-    USERNAME("Invalid username."),
-    PASSWORD("Invalid password."),
-    VERIFICATION("User hasn't verified their E-mail address yet."),
-    LOGIN_CODE("Multi-factor authentication requested. Please check your E-mail.");
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-    public final String description;
+public abstract class ClassiCubeRequest {
+    public final CCAccount account;
 
-    CCError(final String description) {
-        this.description = description;
+    public ClassiCubeRequest(CCAccount account) {
+        this.account = account;
+    }
+
+    public HttpRequest buildWithCookies(final HttpRequest.Builder builder) {
+        return this.account.cookieStore.appendCookies(builder).build();
+    }
+
+    public void updateCookies(final HttpResponse<?> response) {
+        this.account.cookieStore.mergeFromResponse(response);
     }
 }
