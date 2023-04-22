@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+// Based on this code: https://github.com/allinkdev/BetacraftServerListParser
 public class BCServerList {
     private final List<BCServerInfo> servers;
 

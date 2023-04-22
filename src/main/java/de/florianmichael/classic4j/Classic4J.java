@@ -22,8 +22,6 @@ import de.florianmichael.classic4j.api.ExternalInterface;
 import de.florianmichael.classic4j.handler.BetaCraftHandler;
 import de.florianmichael.classic4j.handler.ClassiCubeHandler;
 
-import java.util.function.Consumer;
-
 public class Classic4J {
     private final BetaCraftHandler betaCraftHandler = new BetaCraftHandler(this);
     private final ClassiCubeHandler classiCubeHandler = new ClassiCubeHandler(this);
@@ -32,12 +30,10 @@ public class Classic4J {
     public ExternalInterface externalInterface = serverId -> {
         // Not implemented
     };
-    public Consumer<Throwable> errorHandler = Throwable::printStackTrace;
 
-    public Classic4J(final String userAgent, final ExternalInterface externalInterface, final Consumer<Throwable> errorHandler) {
+    public Classic4J(final String userAgent, final ExternalInterface externalInterface) {
         if (userAgent != null) this.userAgent = userAgent;
         if (externalInterface != null) this.externalInterface = externalInterface;
-        if (errorHandler != null) this.errorHandler = errorHandler;
     }
 
     public BetaCraftHandler betaCraftHandler() {

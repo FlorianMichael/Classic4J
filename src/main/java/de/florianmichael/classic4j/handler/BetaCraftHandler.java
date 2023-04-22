@@ -56,9 +56,8 @@ public class BetaCraftHandler {
                         .post()
                         .quirksMode(Document.QuirksMode.quirks);
             } catch (IOException e) {
-                classic4J.errorHandler.accept(new RuntimeException("Failed to get Jsoup document from server list url", e));
                 complete.accept(null);
-                return;
+                throw new RuntimeException("Failed to get Jsoup document from server list url", e);
             }
 
             complete.accept(BCServerList.fromDocument(document));
@@ -81,7 +80,7 @@ public class BetaCraftHandler {
             AtomicBoolean success = new AtomicBoolean(false);
             WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).whenComplete((stringHttpResponse, throwable) -> {
                 if (throwable != null) {
-                    classic4J.errorHandler.accept(throwable);
+                    throwable.printStackTrace();
                     return;
                 }
 
@@ -92,7 +91,7 @@ public class BetaCraftHandler {
                 complete.accept("0");
             }
         } catch (Throwable t) {
-            classic4J.errorHandler.accept(t);
+            t.printStackTrace();
             complete.accept("0");
         }
     }

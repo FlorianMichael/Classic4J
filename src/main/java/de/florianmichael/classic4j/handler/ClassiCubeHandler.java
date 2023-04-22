@@ -53,7 +53,7 @@ public class ClassiCubeHandler {
         final CCServerListRequest serverListRequest = new CCServerListRequest(account);
         serverListRequest.send().whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
-                classic4J.errorHandler.accept(throwable);
+                throwable.printStackTrace();
                 return;
             }
             complete.accept(ccServerList);
@@ -68,7 +68,7 @@ public class ClassiCubeHandler {
         final CCServerInfoRequest serverInfoRequest = new CCServerInfoRequest(account, serverHashes);
         serverInfoRequest.send().whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
-                classic4J.errorHandler.accept(throwable);
+                throwable.printStackTrace();
                 return;
             }
             complete.accept(ccServerList);
