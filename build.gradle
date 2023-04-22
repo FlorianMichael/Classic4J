@@ -29,7 +29,14 @@ java {
 
 jar {
     dependsOn configurations.lib
-
+    from {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        configurations.lib.collect {
+            zipTree(it)
+        }
+    } {
+        exclude "META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA"
+    }
     from("LICENSE") {
         rename {
             "${it}_${project.archivesBaseName}"
