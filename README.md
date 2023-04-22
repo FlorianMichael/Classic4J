@@ -31,7 +31,6 @@ This library requires you to have [Gson](https://mvnrepository.com/artifact/com.
 To use the API you have to make a new instance of the Classic4J class, you can specify some parameters, if you pass null a default value will be taken
 ```java
 final Classic4J classic4J = new Classic4J(
-        null, // UserAgent - used for the web requests
         null // ExternalInterface - For the BetaCraft MP Pass to make the AuthLib request
         );
 ```
