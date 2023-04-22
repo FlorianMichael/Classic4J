@@ -1,6 +1,15 @@
 # Classic4J
 Java implementation of the ClassiCube and BetaCraft protocol
 
+This project is based on [ViaFabricPlus PR No. 31](https://github.com/FlorianMichael/ViaFabricPlus/pull/31) and [BetacraftServerListParser](https://github.com/allinkdev/BetacraftServerListParser) <br>
+Huge thanks to [Allink](https://github.com/allinkdev) for contributing!
+
+## Contact
+If you encounter any issues, please report them on the
+[issue tracker](https://github.com/FlorianMichael/Classic4J/issues).  
+If you just want to talk or need help with Classic4J feel free to join my
+[Discord](https://discord.gg/BwWhCHUKDf).
+
 ## How to add this to your project
 Just copy this part to your *build.gradle*:
 ```groovy
