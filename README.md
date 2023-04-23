@@ -26,6 +26,9 @@ dependencies {
 ```
 This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path
 
+### Projects implementing Classic4J
+2. [ViaFabricPlus](https://github.com/FlorianMichael/ViaFabricPlus): Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
+
 ## Structure
 There is no main class, there are three classes in the package: **BetaCraftHandler**, **ClassiCubeHandler** and **JSPBetaCraftHandler**, in these classes are the API requests for the respective platforms.
 
