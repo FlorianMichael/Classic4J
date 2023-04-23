@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.classicube.auth.base;
+package de.florianmichael.classic4j.request.classicube.auth.base;
 
-import de.florianmichael.classic4j.handler.ClassiCubeHandler;
+import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCError;
 
 import java.util.Locale;

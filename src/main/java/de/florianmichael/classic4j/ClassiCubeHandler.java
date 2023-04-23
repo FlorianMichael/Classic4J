@@ -15,16 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler;
+package de.florianmichael.classic4j;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import de.florianmichael.classic4j.Classic4J;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
-import de.florianmichael.classic4j.handler.classicube.auth.CCAuthenticationLoginRequest;
-import de.florianmichael.classic4j.handler.classicube.auth.CCAuthenticationTokenRequest;
-import de.florianmichael.classic4j.handler.classicube.server.CCServerInfoRequest;
-import de.florianmichael.classic4j.handler.classicube.server.CCServerListRequest;
+import de.florianmichael.classic4j.request.classicube.auth.CCAuthenticationLoginRequest;
+import de.florianmichael.classic4j.request.classicube.auth.CCAuthenticationTokenRequest;
+import de.florianmichael.classic4j.request.classicube.server.CCServerInfoRequest;
+import de.florianmichael.classic4j.request.classicube.server.CCServerListRequest;
 import de.florianmichael.classic4j.model.classicube.CCServerList;
 import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
 
@@ -42,17 +41,11 @@ public class ClassiCubeHandler {
     public final static URI SERVER_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/server/");
     public final static URI SERVER_LIST_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/servers/");
 
-    private final Classic4J classic4J;
-
-    public ClassiCubeHandler(Classic4J classic4J) {
-        this.classic4J = classic4J;
-    }
-
-    public void requestServerList(final CCAccount account, final Consumer<CCServerList> complete) {
+    public static void requestServerList(final CCAccount account, final Consumer<CCServerList> complete) {
         requestServerList(account, complete, Throwable::printStackTrace);
     }
 
-    public void requestServerList(final CCAccount account, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+    public static void requestServerList(final CCAccount account, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         CCServerListRequest.send(account).whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
@@ -62,19 +55,19 @@ public class ClassiCubeHandler {
         });
     }
 
-    public void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete) {
+    public static void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete) {
         requestServerInfo(account, serverHash, complete, Throwable::printStackTrace);
     }
 
-    public void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+    public static void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         requestServerInfo(account, List.of(serverHash), complete, throwableConsumer);
     }
 
-    public void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete) {
+    public static void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete) {
         requestServerInfo(account, serverHashes, complete, Throwable::printStackTrace);
     }
 
-    public void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+    public static void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         CCServerInfoRequest.send(account, serverHashes).whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
@@ -84,7 +77,7 @@ public class ClassiCubeHandler {
         });
     }
 
-    public void requestAuthentication(final CCAccount account, final String loginCode, final LoginProcessHandler processHandler) {
+    public static void requestAuthentication(final CCAccount account, final String loginCode, final LoginProcessHandler processHandler) {
         CCAuthenticationTokenRequest.send(account).whenComplete((initialTokenResponse, throwable) -> {
             if (throwable != null) {
                 processHandler.handleException(throwable);

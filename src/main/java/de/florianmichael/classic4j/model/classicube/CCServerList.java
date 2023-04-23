@@ -18,7 +18,7 @@
 package de.florianmichael.classic4j.model.classicube;
 
 
-import de.florianmichael.classic4j.handler.ClassiCubeHandler;
+import de.florianmichael.classic4j.ClassiCubeHandler;
 
 import java.util.List;
 

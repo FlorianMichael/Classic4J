@@ -15,11 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler;
+package de.florianmichael.classic4j;
 
-import de.florianmichael.classic4j.Classic4J;
-import de.florianmichael.classic4j.handler.betacraft.BCServerListRequest;
-import de.florianmichael.classic4j.model.betacraft.BCServerList;
+import de.florianmichael.classic4j.api.JoinServerInterface;
 
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -28,38 +26,15 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.Scanner;
-import java.util.function.Consumer;
 
-public class BetaCraftHandler {
+public class JSPBetaCraftHandler {
     public final static URI GET_MP_PASS = URI.create("http://api.betacraft.uk/getmppass.jsp");
-    public final static URI SERVER_LIST = URI.create("https://betacraft.uk/serverlist");
 
-    private final Classic4J classic4J;
-
-    public BetaCraftHandler(Classic4J classic4J) {
-        this.classic4J = classic4J;
-    }
-
-    public void requestServerList(final Consumer<BCServerList> complete) {
-        requestServerList(complete, Throwable::printStackTrace);
-    }
-
-    public void requestServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        BCServerListRequest.send().whenComplete((bcServerList, throwable) -> {
-            if (throwable != null) {
-                throwableConsumer.accept(throwable);
-                return;
-            }
-            complete.accept(bcServerList);
-        });
-    }
-
-    // this API is really outdated
-    public String requestMPPass(final String username, final String ip, final int port) {
+    public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
 
-            this.classic4J.externalInterface.sendAuthRequest(sha1(server.getBytes()));
+            joinServerInterface.sendAuthRequest(sha1(server.getBytes()));
 
             final InputStream connection = new URL(GET_MP_PASS + "?user=" + username + "&server=" + server).openStream();
             Scanner scanner = new Scanner(connection);
@@ -78,7 +53,7 @@ public class BetaCraftHandler {
         }
     }
 
-    private String sha1(final byte[] input) {
+    private static String sha1(final byte[] input) {
         try {
             Formatter formatter = new Formatter();
             final byte[] hash = MessageDigest.getInstance("SHA-1").digest(input);

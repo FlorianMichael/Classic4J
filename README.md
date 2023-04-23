@@ -21,41 +21,34 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.FlorianMichael:Classic4J:1.1.0"
+    implementation "com.github.FlorianMichael:Classic4J:1.2.0"
 }
 ```
 This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path
 
-## Example usage
-### Create instance
-To use the API you have to make a new instance of the Classic4J class, you can specify some parameters, if you pass null a default value will be taken
-```java
-final Classic4J classic4J = new Classic4J(
-        null // ExternalInterface - For the BetaCraft MP Pass to make the AuthLib request
-        );
-```
+## Structure
+There is no main class, there are three classes in the package: **BetaCraftHandler**, **ClassiCubeHandler** and **JSPBetaCraftHandler**, in these classes are the API requests for the respective platforms.
 
+## Example usage
 ### BetaCraft
 Classic4J allows you to dump the server list from betacraft.uk and generate a MP Pass from the BetaCraft launcher, keep in mind that for the MP Pass generator you need to implement the ExternalInterface from above
 ```java
-final BetaCraftHandler betaCraftHandler = classic4J.betaCraftHandler();
-        
-betaCraftHandler.requestServerList(bcServerList -> {
+BetaCraftHandler.requestServerList(bcServerList -> {
     System.out.println(bcServerList.servers().size());
     System.out.println(bcServerList.serversOfVersion(BCVersion.ALPHA).size());
     System.out.println(bcServerList.serversWithOnlineMode(false)); // offline mode
 });
 
-final String mpPass = betaCraftHandler.requestMPPass("lyzev", "kevinzockt.de", 25565);
+final String mpPass = JSPBetaCraftHandler.requestMPPass("lyzev", "kevinzockt.de", 25565, serverId -> {
+    // You have to call the joinServer Statement in here     
+});
 ```
 
 ### ClassiCube
 Classic4J allows you to authenticate with ClassiCube and retrieve the server list
 ```java
-final ClassiCubeHandler classiCubeHandler = classic4J.classiCubeHandler();
-
 final CCAccount account = new CCAccount("EnZaXD", "example");
-classiCubeHandler.requestAuthentication(account, null, new LoginProcessHandler() {
+ClassiCubeHandler.requestAuthentication(account, null, new LoginProcessHandler() {
     @Override
     public void handleMfa(CCAccount account) {
         // Called when the account requires to be verified via MFA
@@ -75,7 +68,7 @@ classiCubeHandler.requestAuthentication(account, null, new LoginProcessHandler()
 ```
 Once you are authenticated, you can then dump the server list like BetaCraft, other API requests like searching are also implemented
 ```java
-classiCubeHandler.requestServerList(account, ccServerList -> {
+ClassiCubeHandler.requestServerList(account, ccServerList -> {
     System.out.println(ccServerList.servers().size());
 });
 ```

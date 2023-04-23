@@ -15,9 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.florianmichael.classic4j.handler.betacraft;
+package de.florianmichael.classic4j.request.betacraft;
 
-import de.florianmichael.classic4j.handler.BetaCraftHandler;
+import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

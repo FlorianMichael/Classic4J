@@ -17,7 +17,7 @@
  */
 package de.florianmichael.classic4j.api;
 
-public interface ExternalInterface {
+public interface JoinServerInterface {
 
     void sendAuthRequest(final String serverId);
 }
