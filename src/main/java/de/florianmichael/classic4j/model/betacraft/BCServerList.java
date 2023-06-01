@@ -25,7 +25,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public record BCServerList(List<BCServerInfo> servers) {
+public class BCServerList {
+    private final List<BCServerInfo> servers;
+
+    public BCServerList(final List<BCServerInfo> servers) {
+        this.servers = servers;
+    }
 
     public static BCServerList fromDocument(final Document document) {
         final List<BCServerInfo> servers = new LinkedList<>();
@@ -116,7 +121,6 @@ public record BCServerList(List<BCServerInfo> servers) {
         return new BCServerList(servers);
     }
 
-    @Override
     public List<BCServerInfo> servers() {
         return Collections.unmodifiableList(this.servers);
     }

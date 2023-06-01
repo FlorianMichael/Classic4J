@@ -17,5 +17,20 @@
  */
 package de.florianmichael.classic4j.util;
 
-public record Pair<K, V>(K key, V value) {
+public class Pair<K, V> {
+    private final K key;
+    private final V value;
+
+    public Pair(final K key, final V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K key() {
+        return this.key;
+    }
+
+    public V value() {
+        return this.value;
+    }
 }
