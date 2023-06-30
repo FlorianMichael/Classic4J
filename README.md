@@ -11,19 +11,13 @@ If you just want to talk or need help with Classic4J feel free to join my
 [Discord](https://discord.gg/BwWhCHUKDf).
 
 ## How to add this to your project
-Just copy this part to your *build.gradle*:
-```groovy
-repositories {
-    maven {
-        name = "Jitpack"
-        url = "https://jitpack.io"
-    }
-}
+### Gradle/Maven
+To use Classic4J with Gradle/Maven you can use this [Maven server](https://maven.lenni0451.net/#/releases/de/florianmichael/Classic4J) or [Jitpack](https://jitpack.io/#FlorianMichael/Classic4J).  
+You can also find instructions how to implement it into your build script there.
 
-dependencies {
-    implementation "com.github.FlorianMichael:Classic4J:1.2.0"
-}
-```
+### Jar File
+If you just want the latest jar file you can download it from the GitHub [Actions](https://github.com/FlorianMichael/Classic4J/actions) or use the [Release](https://github.com/FlorianMichael/Classic4J/releases).
+
 This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path
 
 ### Projects implementing Classic4J

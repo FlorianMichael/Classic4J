@@ -1,5 +1,6 @@
 plugins {
     id "java"
+    id "maven-publish"
 }
 
 archivesBaseName = "Classic4J"
@@ -22,6 +23,7 @@ dependencies {
 
 java {
     withSourcesJar()
+    withJavadocJar()
 
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -40,6 +42,53 @@ jar {
     from("LICENSE") {
         rename {
             "${it}_${project.archivesBaseName}"
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "reposilite"
+            def releasesUrl = "https://maven.lenni0451.net/releases"
+            def snapshotsUrl = "https://maven.lenni0451.net/snapshots"
+            url = project.version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            artifactId = project.archivesBaseName
+            groupId = project.group
+            version = project.version
+
+            from components.java
+
+            pom {
+                name = artifactId
+                description = "Java implementation of the ClassiCube and BetaCraft protocol"
+                url = "https://github.com/FlorianMichael/Classic4J"
+                licenses {
+                    license {
+                        name = "Apache-2.0 license"
+                        url = "https://github.com/FlorianMichael/Classic4J/blob/main/LICENSE"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "FlorianMichael"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/FlorianMichael/Classic4J.git"
+                    developerConnection = "scm:git:ssh://github.com/FlorianMichael/Classic4J.git"
+                    url = "github.com/FlorianMichael/Classic4J"
+                }
+            }
         }
     }
 }
