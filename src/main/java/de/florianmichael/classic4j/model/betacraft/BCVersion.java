@@ -19,6 +19,9 @@ package de.florianmichael.classic4j.model.betacraft;
 
 import java.util.Arrays;
 
+/**
+ * This enum represents the version of a BetaCraft server. It is used to determine the protocol version of the server.
+ */
 public enum BCVersion {
     RELEASE(new String[]{"r", "1" /* Hacky I know, but it works */}),
     CLASSIC(new String[]{"c"}),

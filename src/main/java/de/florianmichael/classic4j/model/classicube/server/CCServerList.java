@@ -15,24 +15,24 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.model.classicube;
-
+package de.florianmichael.classic4j.model.classicube.server;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
 
 import java.util.List;
 
-public class CCServerList {
-    private final List<CCServerInfo> servers;
+/**
+ * This class represents a list of servers on the ClassiCube server list. It is used by {@link ClassiCubeHandler}.
+ * @param servers The servers on the ClassiCube server list.
+ */
+public record CCServerList(List<CCServerInfo> servers) {
 
-    public CCServerList(final List<CCServerInfo> servers) {
-        this.servers = servers;
-    }
-
-    public List<CCServerInfo> servers() {
-        return this.servers;
-    }
-
+    /**
+     * Creates a new {@link CCServerList} from the given JSON string.
+     *
+     * @param json The JSON string to create the {@link CCServerList} from.
+     * @return The created {@link CCServerList}.
+     */
     public static CCServerList fromJson(final String json) {
         return ClassiCubeHandler.GSON.fromJson(json, CCServerList.class);
     }

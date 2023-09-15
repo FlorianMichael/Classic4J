@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.model;
+package de.florianmichael.classic4j.util.model;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;

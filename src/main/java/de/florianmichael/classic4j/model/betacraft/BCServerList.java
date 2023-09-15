@@ -24,14 +24,21 @@ import org.jsoup.select.Elements;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-public class BCServerList {
-    private final List<BCServerInfo> servers;
+/**
+ * This class represents a list of servers on the BetaCraft server list. It is used to parse the HTML document returned by the BetaCraft server list.
+ *
+ * @param servers The servers on the BetaCraft server list.
+ */
+public record BCServerList(List<BCServerInfo> servers) {
 
-    public BCServerList(final List<BCServerInfo> servers) {
-        this.servers = servers;
-    }
-
+    /**
+     * Parses the HTML document returned by the BetaCraft server list and returns a {@link BCServerList} object.
+     *
+     * @param document The HTML document returned by the BetaCraft server list.
+     * @return A {@link BCServerList} object.
+     */
     public static BCServerList fromDocument(final Document document) {
         final List<BCServerInfo> servers = new LinkedList<>();
         final Elements serverElements = document.getElementsByClass("online");
@@ -44,7 +51,6 @@ public class BCServerList {
             }
 
             final String substringedUrl = joinUrl.substring(7);
-
             final String[] urlParts = substringedUrl.split("/");
 
             if (urlParts.length != 4) {
@@ -96,8 +102,7 @@ public class BCServerList {
                 continue;
             }
 
-            final String playerCountActualContent = playerCountContent.substring(indexOfOpeningBracket + 1, indexOfClosingBracket)
-                    .replace(" ", "");
+            final String playerCountActualContent = playerCountContent.substring(indexOfOpeningBracket + 1, indexOfClosingBracket).replace(" ", "");
             final String[] splitPlayerCount = playerCountActualContent.split("/");
 
             if (splitPlayerCount.length != 2) {
@@ -121,6 +126,7 @@ public class BCServerList {
         return new BCServerList(servers);
     }
 
+    @Override
     public List<BCServerInfo> servers() {
         return Collections.unmodifiableList(this.servers);
     }
@@ -137,5 +143,25 @@ public class BCServerList {
 
     public List<BCServerInfo> withGameVersion(final String gameVersion) {
         return this.servers().stream().filter(s -> s.gameVersion().equals(gameVersion)).toList();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BCServerList that = (BCServerList) o;
+        return Objects.equals(servers, that.servers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(servers);
+    }
+
+    @Override
+    public String toString() {
+        return "BCServerList{" +
+                "servers=" + servers +
+                '}';
     }
 }

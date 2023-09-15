@@ -18,23 +18,31 @@
 package de.florianmichael.classic4j.request.classicube.auth;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.request.classicube.auth.base.CCAuthenticationResponse;
-import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
-import de.florianmichael.classic4j.util.WebRequests;
+import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.classic4j.util.WebUtils;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class is used to request a new authentication token from the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ */
 public class CCAuthenticationTokenRequest {
 
+    /**
+     * Sends a request to the ClassiCube server list to get a new authentication token.
+     * @param account The account to get the token for.
+     * @return        The response.
+     */
     public static CompletableFuture<CCAuthenticationResponse> send(final CCAccount account) {
         return CompletableFuture.supplyAsync(() -> {
             final HttpRequest request = HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.AUTHENTICATION_URI).build();
 
-            final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
+            final HttpResponse<String> response = WebUtils.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            WebRequests.updateCookies(account.cookieStore, response);
+            WebUtils.updateCookies(account.cookieStore, response);
             final String responseBody = response.body();
             return CCAuthenticationResponse.fromJson(responseBody);
         });

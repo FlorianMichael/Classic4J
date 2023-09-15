@@ -17,11 +17,28 @@
 
 package de.florianmichael.classic4j.api;
 
-import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 
+/**
+ * This interface is used to handle the login process. This is used by the {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ */
 public interface LoginProcessHandler {
 
+    /**
+     * Handles the MFA process. This is called when the account has MFA enabled. The user should be prompted to enter the MFA code.
+     * @param account The account that has MFA enabled.
+     */
     void handleMfa(final CCAccount account);
+
+    /**
+     * Handles the successful login. This is called when the login was successful.
+     * @param account The account that was used for the login.
+     */
     void handleSuccessfulLogin(final CCAccount account);
+
+    /**
+     * Handles the failed login. This is called when the login failed.
+     * @param throwable The throwable that caused the login to fail.
+     */
     void handleException(final Throwable throwable);
 }

@@ -15,11 +15,16 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.model.classicube.highlevel;
+package de.florianmichael.classic4j.model.classicube.account;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.classic4j.model.CookieStore;
+import de.florianmichael.classic4j.util.model.CookieStore;
 
+import java.util.Objects;
+
+/**
+ * This class represents an account on the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ */
 public class CCAccount {
     public final CookieStore cookieStore = new CookieStore();
 
@@ -37,6 +42,10 @@ public class CCAccount {
         this.password = password;
     }
 
+    /**
+     * Converts this {@link CCAccount} to a JSON object.
+     * @return The JSON object.
+     */
     public JsonObject asJson() {
         final JsonObject object = new JsonObject();
 
@@ -47,16 +56,16 @@ public class CCAccount {
         return object;
     }
 
+    /**
+     * Creates a new {@link CCAccount} from the given JSON object.
+     * @param object The JSON object to create the {@link CCAccount} from.
+     * @return The created {@link CCAccount}.
+     */
     public static CCAccount fromJson(final JsonObject object) {
         String token = null;
-        if (object.has("token"))
-            token = object.get("token").getAsString();
+        if (object.has("token")) token = object.get("token").getAsString();
 
-        return new CCAccount(
-                token,
-                object.get("username").getAsString(),
-                object.get("password").getAsString()
-        );
+        return new CCAccount(token, object.get("username").getAsString(), object.get("password").getAsString());
     }
 
     public String token() {
@@ -69,6 +78,19 @@ public class CCAccount {
 
     public String password() {
         return password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CCAccount ccAccount = (CCAccount) o;
+        return Objects.equals(cookieStore, ccAccount.cookieStore) && Objects.equals(token, ccAccount.token) && Objects.equals(username, ccAccount.username) && Objects.equals(password, ccAccount.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cookieStore, token, username, password);
     }
 
     @Override

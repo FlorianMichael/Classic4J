@@ -15,8 +15,13 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.model.classicube.highlevel;
+package de.florianmichael.classic4j.model.classicube.account;
 
+import java.util.Objects;
+
+/**
+ * This class represents the data needed to authenticate with the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ */
 public class CCAuthenticationData {
     private final String username;
     private final String password;
@@ -34,6 +39,11 @@ public class CCAuthenticationData {
         this.loginCode = loginCode;
     }
 
+    /**
+     * Creates a new {@link CCAuthenticationData} with the given loginCode. This is used for two-factor authentication.
+     * @param loginCode The login code.
+     * @return The created {@link CCAuthenticationData}.
+     */
     public CCAuthenticationData withLoginCode(final String loginCode) {
         return new CCAuthenticationData(this.username, this.password, this.previousToken, loginCode);
     }
@@ -52,6 +62,19 @@ public class CCAuthenticationData {
 
     public String loginCode() {
         return loginCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CCAuthenticationData that = (CCAuthenticationData) o;
+        return Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(previousToken, that.previousToken) && Objects.equals(loginCode, that.loginCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, previousToken, loginCode);
     }
 
     @Override

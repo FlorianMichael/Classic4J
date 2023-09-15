@@ -24,8 +24,16 @@ import org.jsoup.nodes.Document;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class is used to request the server list from the BetaCraft server list. It is used by {@link BetaCraftHandler}.
+ */
 public class BCServerListRequest {
 
+    /**
+     * Sends the request to the BetaCraft server list.
+     *
+     * @return A {@link CompletableFuture} that will be completed with the {@link BCServerList} when the request is finished. If the request fails, it will be completed with null.
+     */
     public static CompletableFuture<BCServerList> send() {
         return CompletableFuture.supplyAsync(() -> {
             Document document;

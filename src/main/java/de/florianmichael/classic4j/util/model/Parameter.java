@@ -15,18 +15,14 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.model.classicube.highlevel;
+package de.florianmichael.classic4j.util.model;
 
-public enum CCError {
-    TOKEN("Incorrect token. Is your ViaFabricPlus out of date?"),
-    USERNAME("Invalid username."),
-    PASSWORD("Invalid password."),
-    VERIFICATION("User hasn't verified their E-mail address yet."),
-    LOGIN_CODE("Multi-factor authentication requested. Please check your E-mail.");
+public class Parameter {
+    public final String name;
+    public final String value;
 
-    public final String description;
-
-    CCError(final String description) {
-        this.description = description;
+    public Parameter(String name, String value) {
+        this.name = name;
+        this.value = value;
     }
 }

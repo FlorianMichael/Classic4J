@@ -24,27 +24,45 @@ import de.florianmichael.classic4j.request.classicube.auth.CCAuthenticationLogin
 import de.florianmichael.classic4j.request.classicube.auth.CCAuthenticationTokenRequest;
 import de.florianmichael.classic4j.request.classicube.server.CCServerInfoRequest;
 import de.florianmichael.classic4j.request.classicube.server.CCServerListRequest;
-import de.florianmichael.classic4j.model.classicube.CCServerList;
-import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
+import de.florianmichael.classic4j.model.classicube.server.CCServerList;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 
 import javax.security.auth.login.LoginException;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * This class provides methods to interact with the ClassiCube API.
+ */
 public class ClassiCubeHandler {
     public final static Gson GSON = new GsonBuilder().serializeNulls().create();
 
+    /**
+     * The URI to the ClassiCube root.
+     */
     public final static URI CLASSICUBE_ROOT_URI = URI.create("https://www.classicube.net");
 
     public final static URI AUTHENTICATION_URI = CLASSICUBE_ROOT_URI.resolve("/api/login/");
     public final static URI SERVER_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/server/");
     public final static URI SERVER_LIST_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/servers/");
 
+    /**
+     * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     * @param account  The account to use for the request.
+     * @param complete The consumer that will be called when the request is complete.
+     */
     public static void requestServerList(final CCAccount account, final Consumer<CCServerList> complete) {
         requestServerList(account, complete, Throwable::printStackTrace);
     }
 
+    /**
+     * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     * @param account           The account to use for the request.
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
     public static void requestServerList(final CCAccount account, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         CCServerListRequest.send(account).whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
@@ -55,18 +73,46 @@ public class ClassiCubeHandler {
         });
     }
 
+    /**
+     * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     * @param account     The account to use for the request.
+     * @param serverHash  The server hash to request.
+     * @param complete    The consumer that will be called when the request is complete.
+     */
     public static void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete) {
         requestServerInfo(account, serverHash, complete, Throwable::printStackTrace);
     }
 
+    /**
+     * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     *
+     * @param account           The account to use for the request.
+     * @param serverHash        The server hash to request.
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
     public static void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        requestServerInfo(account, List.of(serverHash), complete, throwableConsumer);
+        requestServerInfo(account, Collections.singletonList(serverHash), complete, throwableConsumer);
     }
 
+    /**
+     * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     *
+     * @param account      The account to use for the request.
+     * @param serverHashes The server hashes to request.
+     * @param complete     The consumer that will be called when the request is complete.
+     */
     public static void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete) {
         requestServerInfo(account, serverHashes, complete, Throwable::printStackTrace);
     }
 
+    /**
+     * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     * @param account           The account to use for the request.
+     * @param serverHashes      The server hashes to request.
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
     public static void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         CCServerInfoRequest.send(account, serverHashes).whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
@@ -77,6 +123,18 @@ public class ClassiCubeHandler {
         });
     }
 
+    /**
+     * Authenticates the given account with the given login code. The {@link LoginProcessHandler} will be called when the login process is complete.
+     * If the login process fails, the {@link LoginProcessHandler#handleException(Throwable)} method will be called. If the login process requires MFA,
+     * the {@link LoginProcessHandler#handleMfa(CCAccount)} method will be called. If the login process is successful, the {@link LoginProcessHandler#handleSuccessfulLogin(CCAccount)}
+     * method will be called. If the login process is successful, the account will be updated with the new token.
+     * If it is the first login, the loginCode parameter can be null.
+     * To authenticate an account with MFA, you call this method twice, once with null as loginCode and once with the MFA code you received.
+     *
+     * @param account        The account to authenticate.
+     * @param loginCode      The login code to use.
+     * @param processHandler The handler to use for the login process.
+     */
     public static void requestAuthentication(final CCAccount account, final String loginCode, final LoginProcessHandler processHandler) {
         CCAuthenticationTokenRequest.send(account).whenComplete((initialTokenResponse, throwable) -> {
             if (throwable != null) {

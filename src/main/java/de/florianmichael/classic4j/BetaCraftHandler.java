@@ -23,13 +23,29 @@ import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import java.net.URI;
 import java.util.function.Consumer;
 
+/**
+ * This class provides methods to interact with the BetaCraft API.
+ */
 public class BetaCraftHandler {
+
+    /**
+     * The URI to the BetaCraft server list.
+     */
     public final static URI SERVER_LIST = URI.create("https://betacraft.uk/serverlist");
 
+    /**
+     * Requests the BetaCraft server list and returns it as a {@link BCServerList} object.
+     * @param complete The consumer that will be called when the request is complete.
+     */
     public static void requestServerList(final Consumer<BCServerList> complete) {
         requestServerList(complete, Throwable::printStackTrace);
     }
 
+    /**
+     * Requests the BetaCraft server list and returns it as a {@link BCServerList} object.
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
     public static void requestServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         BCServerListRequest.send().whenComplete((bcServerList, throwable) -> {
             if (throwable != null) {

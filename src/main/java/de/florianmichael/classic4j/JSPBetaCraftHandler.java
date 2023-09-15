@@ -27,9 +27,20 @@ import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.Scanner;
 
+/**
+ * This class provides methods to interact with the BetaCraft API. These API methods are used to request the Multiplayer Pass for a server.
+ */
 public class JSPBetaCraftHandler {
     public final static URI GET_MP_PASS = URI.create("http://api.betacraft.uk/getmppass.jsp");
 
+    /**
+     * Requests the Multiplayer Pass for a server from the BetaCraft API.
+     * @param username            The username of the player.
+     * @param ip                  The IP of the server.
+     * @param port                The port of the server.
+     * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
+     * @return                    The Multiplayer Pass for the server.
+     */
     public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
@@ -53,6 +64,11 @@ public class JSPBetaCraftHandler {
         }
     }
 
+    /**
+     * Hashes the input using SHA-1.
+     * @param input The input to hash.
+     * @return      The hashed input.
+     */
     private static String sha1(final byte[] input) {
         try {
             Formatter formatter = new Formatter();

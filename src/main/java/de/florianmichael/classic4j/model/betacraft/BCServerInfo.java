@@ -17,6 +17,11 @@
 
 package de.florianmichael.classic4j.model.betacraft;
 
+import java.util.Objects;
+
+/**
+ * This class represents a server on the BetaCraft server list.
+ */
 public class BCServerInfo {
     private final String name;
     private final int playerCount;
@@ -74,6 +79,19 @@ public class BCServerInfo {
 
     public String gameVersion() {
         return gameVersion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BCServerInfo that = (BCServerInfo) o;
+        return playerCount == that.playerCount && playerLimit == that.playerLimit && port == that.port && onlineMode == that.onlineMode && Objects.equals(name, that.name) && Objects.equals(host, that.host) && version == that.version && Objects.equals(joinUrl, that.joinUrl) && Objects.equals(gameVersion, that.gameVersion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, playerCount, playerLimit, host, port, version, onlineMode, joinUrl, gameVersion);
     }
 
     @Override

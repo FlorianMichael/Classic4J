@@ -17,7 +17,8 @@
 
 package de.florianmichael.classic4j.util;
 
-import de.florianmichael.classic4j.model.CookieStore;
+import de.florianmichael.classic4j.util.model.CookieStore;
+import de.florianmichael.classic4j.util.model.Parameter;
 
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -25,18 +26,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-public class WebRequests {
+public class WebUtils {
     public final static HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
-    @SafeVarargs
-    public static String createRequestBody(final Pair<String, String>... parameters) {
+    public static String createRequestBody(final Parameter... parameters) {
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < parameters.length; i++) {
-            final Pair<String, String> parameter = parameters[i];
-            if (parameter.key() == null || parameter.value() == null) continue;
+            final Parameter parameter = parameters[i];
+            if (parameter.name == null || parameter.value == null) continue;
 
-            builder.append(parameter.key()).append("=").
-                    append(URLEncoder.encode(parameter.value(), StandardCharsets.UTF_8));
+            builder.append(parameter.name).append("=").append(URLEncoder.encode(parameter.value, StandardCharsets.UTF_8));
 
             if (i != parameters.length - 1) {
                 builder.append("&");

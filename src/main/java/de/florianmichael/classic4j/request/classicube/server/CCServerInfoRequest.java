@@ -18,9 +18,9 @@
 package de.florianmichael.classic4j.request.classicube.server;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.model.classicube.CCServerList;
-import de.florianmichael.classic4j.model.classicube.highlevel.CCAccount;
-import de.florianmichael.classic4j.util.WebRequests;
+import de.florianmichael.classic4j.model.classicube.server.CCServerList;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.classic4j.util.WebUtils;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -28,6 +28,9 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class is used to request information about a server from the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ */
 public class CCServerInfoRequest {
 
     private static URI generateUri(final List<String> serverHashes) {
@@ -36,14 +39,20 @@ public class CCServerInfoRequest {
         return ClassiCubeHandler.SERVER_INFO_URI.resolve(joined);
     }
 
+    /**
+     * Sends a request to the ClassiCube server list to get information about the given servers. The response contains information about the server, such as the name, the MOTD, the number of players, etc.
+     * @param account      The account to use for the request.
+     * @param serverHashes The hashes of the servers to get information about.
+     * @return             A CompletableFuture containing the response.
+     */
     public static CompletableFuture<CCServerList> send(final CCAccount account, final List<String> serverHashes) {
         return CompletableFuture.supplyAsync(() -> {
             final URI uri = generateUri(serverHashes);
 
-            final HttpRequest request = WebRequests.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(uri));
-            final HttpResponse<String> response = WebRequests.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
+            final HttpRequest request = WebUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(uri));
+            final HttpResponse<String> response = WebUtils.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            WebRequests.updateCookies(account.cookieStore, response);
+            WebUtils.updateCookies(account.cookieStore, response);
 
             final String body = response.body();
 

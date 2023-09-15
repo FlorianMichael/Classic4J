@@ -15,22 +15,21 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.util;
+package de.florianmichael.classic4j.model.classicube;
 
-public class Pair<K, V> {
-    private final K key;
-    private final V value;
+/**
+ * This enum represents an error that can occur when logging in to ClassiCube.
+ */
+public enum CCError {
+    TOKEN("Incorrect token. Is your ViaFabricPlus out of date?"),
+    USERNAME("Invalid username."),
+    PASSWORD("Invalid password."),
+    VERIFICATION("User hasn't verified their E-mail address yet."),
+    LOGIN_CODE("Multi-factor authentication requested. Please check your E-mail.");
 
-    public Pair(final K key, final V value) {
-        this.key = key;
-        this.value = value;
-    }
+    public final String description;
 
-    public K key() {
-        return this.key;
-    }
-
-    public V value() {
-        return this.value;
+    CCError(final String description) {
+        this.description = description;
     }
 }
