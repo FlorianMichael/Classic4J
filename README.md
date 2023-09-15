@@ -16,7 +16,7 @@ You can also find instructions how to implement it into your build script there.
 If you just want the latest jar file you can download it from the GitHub [Actions](https://github.com/FlorianMichael/Classic4J/actions) or use the [Release](https://github.com/FlorianMichael/Classic4J/releases).
 
 ### Requirements
-This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path. <br>
+This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) and [JSoup](https://jsoup.org/) in your class path. <br>
 The **minimum** Java version is Java **16**.
 
 ### Projects implementing Classic4J
