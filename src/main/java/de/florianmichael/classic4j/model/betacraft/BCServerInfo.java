@@ -22,17 +22,8 @@ import java.util.Objects;
 /**
  * This class represents a server on the BetaCraft server list.
  */
-public class BCServerInfo {
-    private final String name;
-    private final int playerCount;
-    private final int playerLimit;
-    private final String host;
-    private final int port;
-    private final BCVersion version;
-    private final boolean onlineMode;
-    private final String joinUrl;
-    private final String gameVersion;
-
+public record BCServerInfo(String name, int playerCount, int playerLimit, String host, int port, BCVersion version,
+                           boolean onlineMode, String joinUrl, String gameVersion) {
     public BCServerInfo(final String name, final int playerCount, final int playerLimit, final String host, final int port, final BCVersion version, final boolean onlineMode, final String joinUrl, final String gameVersion) {
         this.name = name.trim();
         this.playerCount = playerCount;
@@ -45,53 +36,12 @@ public class BCServerInfo {
         this.gameVersion = gameVersion;
     }
 
-    public String name() {
-        return name;
-    }
-
-    public int playerCount() {
-        return playerCount;
-    }
-
-    public int playerLimit() {
-        return playerLimit;
-    }
-
-    public String host() {
-        return host;
-    }
-
-    public int port() {
-        return port;
-    }
-
-    public BCVersion version() {
-        return version;
-    }
-
-    public boolean onlineMode() {
-        return onlineMode;
-    }
-
-    public String joinUrl() {
-        return joinUrl;
-    }
-
-    public String gameVersion() {
-        return gameVersion;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BCServerInfo that = (BCServerInfo) o;
         return playerCount == that.playerCount && playerLimit == that.playerLimit && port == that.port && onlineMode == that.onlineMode && Objects.equals(name, that.name) && Objects.equals(host, that.host) && version == that.version && Objects.equals(joinUrl, that.joinUrl) && Objects.equals(gameVersion, that.gameVersion);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, playerCount, playerLimit, host, port, version, onlineMode, joinUrl, gameVersion);
     }
 
     @Override

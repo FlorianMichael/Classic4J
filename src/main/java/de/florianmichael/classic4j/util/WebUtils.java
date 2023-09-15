@@ -33,9 +33,9 @@ public class WebUtils {
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < parameters.length; i++) {
             final Parameter parameter = parameters[i];
-            if (parameter.name == null || parameter.value == null) continue;
+            if (parameter.name() == null || parameter.value() == null) continue;
 
-            builder.append(parameter.name).append("=").append(URLEncoder.encode(parameter.value, StandardCharsets.UTF_8));
+            builder.append(parameter.name()).append("=").append(URLEncoder.encode(parameter.value(), StandardCharsets.UTF_8));
 
             if (i != parameters.length - 1) {
                 builder.append("&");

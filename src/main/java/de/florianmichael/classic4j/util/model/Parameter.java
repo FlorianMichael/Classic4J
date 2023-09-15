@@ -17,12 +17,5 @@
 
 package de.florianmichael.classic4j.util.model;
 
-public class Parameter {
-    public final String name;
-    public final String value;
-
-    public Parameter(String name, String value) {
-        this.name = name;
-        this.value = value;
-    }
+public record Parameter(String name, String value) {
 }
