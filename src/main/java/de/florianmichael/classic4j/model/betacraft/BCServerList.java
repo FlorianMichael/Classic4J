@@ -88,38 +88,7 @@ public record BCServerList(List<BCServerInfo> servers) {
             final String halfParsedNameStr = rawNameStr.substring(Math.min(firstIndexOfClosingSquareBracket + 2, rawNameStr.length() - 1));
             final boolean onlineMode = halfParsedNameStr.endsWith("[Online Mode]");
             final String parsedNameStr = onlineMode ? halfParsedNameStr.replace("[Online Mode]", "") : halfParsedNameStr;
-            final Element playerCountElement = serverElement.nextElementSibling();
-
-            if (playerCountElement == null) {
-                continue;
-            }
-
-            final String playerCountContent = playerCountElement.text();
-            final int indexOfOpeningBracket = playerCountContent.indexOf("(");
-            final int indexOfClosingBracket = playerCountContent.indexOf(")");
-
-            if (indexOfOpeningBracket == -1 || indexOfClosingBracket == -1) {
-                continue;
-            }
-
-            final String playerCountActualContent = playerCountContent.substring(indexOfOpeningBracket + 1, indexOfClosingBracket).replace(" ", "");
-            final String[] splitPlayerCount = playerCountActualContent.split("/");
-
-            if (splitPlayerCount.length != 2) {
-                continue;
-            }
-
-            final int playerCount;
-            final int playerLimit;
-
-            try {
-                playerCount = Integer.parseInt(splitPlayerCount[0]);
-                playerLimit = Integer.parseInt(splitPlayerCount[1]);
-            } catch (NumberFormatException ignored) {
-                continue;
-            }
-
-            final BCServerInfo server = new BCServerInfo(parsedNameStr, playerCount, playerLimit, host, port, version, onlineMode, joinUrl, versionIdentifier);
+            final BCServerInfo server = new BCServerInfo(parsedNameStr, host, port, version, onlineMode, joinUrl, versionIdentifier);
 
             servers.add(server);
         }

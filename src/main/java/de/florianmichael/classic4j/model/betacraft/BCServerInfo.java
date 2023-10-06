@@ -22,12 +22,10 @@ import java.util.Objects;
 /**
  * This class represents a server on the BetaCraft server list.
  */
-public record BCServerInfo(String name, int playerCount, int playerLimit, String host, int port, BCVersion version,
+public record BCServerInfo(String name, String host, int port, BCVersion version,
                            boolean onlineMode, String joinUrl, String gameVersion) {
-    public BCServerInfo(final String name, final int playerCount, final int playerLimit, final String host, final int port, final BCVersion version, final boolean onlineMode, final String joinUrl, final String gameVersion) {
+    public BCServerInfo(final String name, final String host, final int port, final BCVersion version, final boolean onlineMode, final String joinUrl, final String gameVersion) {
         this.name = name.trim();
-        this.playerCount = playerCount;
-        this.playerLimit = playerLimit;
         this.host = host;
         this.port = port;
         this.version = version;
@@ -41,15 +39,13 @@ public record BCServerInfo(String name, int playerCount, int playerLimit, String
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BCServerInfo that = (BCServerInfo) o;
-        return playerCount == that.playerCount && playerLimit == that.playerLimit && port == that.port && onlineMode == that.onlineMode && Objects.equals(name, that.name) && Objects.equals(host, that.host) && version == that.version && Objects.equals(joinUrl, that.joinUrl) && Objects.equals(gameVersion, that.gameVersion);
+        return port == that.port && onlineMode == that.onlineMode && Objects.equals(name, that.name) && Objects.equals(host, that.host) && version == that.version && Objects.equals(joinUrl, that.joinUrl) && Objects.equals(gameVersion, that.gameVersion);
     }
 
     @Override
     public String toString() {
         return "BCServerInfo{" +
                 "name='" + name + '\'' +
-                ", playerCount=" + playerCount +
-                ", playerLimit=" + playerLimit +
                 ", host='" + host + '\'' +
                 ", port=" + port +
                 ", version=" + version +
