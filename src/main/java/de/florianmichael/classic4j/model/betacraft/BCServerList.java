@@ -19,13 +19,11 @@ package de.florianmichael.classic4j.model.betacraft;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import de.florianmichael.classic4j.BetaCraftHandler;
+import java.net.URI;
 import java.net.http.HttpClient;
-
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -35,45 +33,32 @@ import java.util.concurrent.CompletableFuture;
  *
  * @param servers The servers on the BetaCraft server list.
  */
-public record BCServerList(List<BCServerInfo> servers) {
-
-    public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson) {
-        return CompletableFuture.supplyAsync(() -> new BCServerList(gson.fromJson(httpClient.sendAsync(HttpRequest.newBuilder()
-                   .uri(BetaCraftHandler.SERVER_LIST)
-                   .build(), BodyHandlers.ofString()).join().body(), JsonArray.class)
-               .asList()
-               .stream()
-               .map(element -> gson.fromJson(element, BCServerInfo.class))
-               .toList())
-        );
+public record BCServerList(List<BCServerInfoSpec> servers) {
+    public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson, final URI uri, final Class<? extends BCServerInfoSpec> infoSpec) {
+        return CompletableFuture.supplyAsync(() -> new BCServerList(gson.fromJson(httpClient.sendAsync(HttpRequest.newBuilder(uri).build(), BodyHandlers.ofString()).join().body(), JsonArray.class)
+            .asList()
+            .stream()
+            .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
+            .toList()
+        ));
     }
 
     @Override
-    public List<BCServerInfo> servers() {
+    public List<BCServerInfoSpec> servers() {
         return Collections.unmodifiableList(this.servers);
     }
 
-    @Deprecated
-    public List<BCServerInfo> serversOfVersion(final BCVersionCategory version) {
-        return serversOfVersionCategory(version);
+    public List<BCServerInfoSpec> serversOfVersionCategory(final BCVersionCategory version) {
+        final List<BCServerInfoSpec> serverListCopy = this.servers();
+
+        return serverListCopy.stream().filter(s -> s.versionCategory().equals(version)).toList();
     }
 
-    public List<BCServerInfo> serversOfVersionCategory(final BCVersionCategory version) {
-        final List<BCServerInfo> serverListCopy = this.servers();
-
-        return serverListCopy.stream().filter(s -> s.version().equals(version)).toList();
-    }
-
-    public List<BCServerInfo> serversWithOnlineMode(final boolean on) {
+    public List<BCServerInfoSpec> serversWithOnlineMode(final boolean on) {
         return this.servers().stream().filter(s -> s.onlineMode() == on).toList();
     }
 
-    @Deprecated
-    public List<BCServerInfo> withGameVersion(final String gameVersion) {
-        return this.withConnectVersion(gameVersion);
-    }
-
-    public List<BCServerInfo> withConnectVersion(final String connectVersion) {
+    public List<BCServerInfoSpec> withConnectVersion(final String connectVersion) {
         return this.servers().stream().filter(s -> s.connectVersion().equals(connectVersion)).toList();
     }
 

@@ -15,17 +15,20 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.api;
+package de.florianmichael.classic4j.request.betacraft;
 
-/**
- * This interface is used to send the authentication request to the server. This is used by the {@link de.florianmichael.classic4j.ClassiCubeHandler}.
- * @see de.florianmichael.classic4j.ClassiCubeHandler
- */
-public interface JoinServerInterface {
+import com.google.gson.Gson;
+import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
+import de.florianmichael.classic4j.model.betacraft.BCServerList;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.util.concurrent.CompletableFuture;
 
-    /**
-     * Sends the authentication request to the server.
-     * @param serverId The server ID to use for the request.
-     */
-    void sendAuthRequest(final String serverId);
+public interface BCServerListRequestInterface {
+  URI uri();
+  Class<? extends BCServerInfoSpec> infoSpec();
+
+  default CompletableFuture<BCServerList> send(final HttpClient client, final Gson gson) {
+    return BCServerList.get(client, gson, this.uri(), this.infoSpec());
+  }
 }

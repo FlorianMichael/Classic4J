@@ -15,17 +15,27 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.api;
+package de.florianmichael.classic4j.model.betacraft;
 
-/**
- * This interface is used to send the authentication request to the server. This is used by the {@link de.florianmichael.classic4j.ClassiCubeHandler}.
- * @see de.florianmichael.classic4j.ClassiCubeHandler
- */
-public interface JoinServerInterface {
+import java.util.List;
+import java.util.Optional;
 
-    /**
-     * Sends the authentication request to the server.
-     * @param serverId The server ID to use for the request.
-     */
-    void sendAuthRequest(final String serverId);
+public interface BCServerInfoSpec {
+  String name();
+  String description();
+  default Optional<byte[]> icon() {
+    return Optional.empty();
+  }
+  boolean isPublic();
+  int playerCount();
+  List<String> playerNames();
+  int playerLimit();
+  boolean onlineMode();
+  String connectVersion();
+  String socketAddress();
+  String protocol();
+  BCVersionCategory versionCategory();
+  String softwareName();
+  String softwareVersion();
+  long lastPingTime();
 }
