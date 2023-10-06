@@ -31,7 +31,7 @@ public class BetaCraftHandler {
     /**
      * The URI to the BetaCraft server list.
      */
-    public final static URI SERVER_LIST = URI.create("https://betacraft.uk/serverlist");
+    public final static URI SERVER_LIST = URI.create("https://api.betacraft.uk/v2/server_list");
 
     /**
      * Requests the BetaCraft server list and returns it as a {@link BCServerList} object.

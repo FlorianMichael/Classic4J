@@ -17,11 +17,11 @@
 
 package de.florianmichael.classic4j.request.betacraft;
 
+import com.google.gson.Gson;
 import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
+import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -35,21 +35,6 @@ public class BCServerListRequest {
      * @return A {@link CompletableFuture} that will be completed with the {@link BCServerList} when the request is finished. If the request fails, it will be completed with null.
      */
     public static CompletableFuture<BCServerList> send() {
-        return CompletableFuture.supplyAsync(() -> {
-            Document document;
-
-            try {
-                document = Jsoup.connect(BetaCraftHandler.SERVER_LIST.toString())
-                        .userAgent("Java/" + Runtime.version())
-                        .header("Accept", "text/html, image/gif, image/jpeg, ; q=.2,/*; q=.2")
-                        .post()
-                        .quirksMode(Document.QuirksMode.quirks);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            return BCServerList.fromDocument(document);
-        });
+        return BCServerList.get(HttpClient.newHttpClient(), new Gson());
     }
 }

@@ -17,41 +17,15 @@
 
 package de.florianmichael.classic4j.model.betacraft;
 
-import java.util.Objects;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * This class represents a server on the BetaCraft server list.
  */
-public record BCServerInfo(String name, String host, int port, BCVersion version,
-                           boolean onlineMode, String joinUrl, String gameVersion) {
-    public BCServerInfo(final String name, final String host, final int port, final BCVersion version, final boolean onlineMode, final String joinUrl, final String gameVersion) {
-        this.name = name.trim();
-        this.host = host;
-        this.port = port;
-        this.version = version;
-        this.onlineMode = onlineMode;
-        this.joinUrl = joinUrl;
-        this.gameVersion = gameVersion;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BCServerInfo that = (BCServerInfo) o;
-        return port == that.port && onlineMode == that.onlineMode && Objects.equals(name, that.name) && Objects.equals(host, that.host) && version == that.version && Objects.equals(joinUrl, that.joinUrl) && Objects.equals(gameVersion, that.gameVersion);
-    }
-
-    @Override
-    public String toString() {
-        return "BCServerInfo{" +
-                "name='" + name + '\'' +
-                ", host='" + host + '\'' +
-                ", port=" + port +
-                ", version=" + version +
-                ", onlineMode=" + onlineMode +
-                ", joinUrl='" + joinUrl + '\'' +
-                ", gameVersion='" + gameVersion + '\'' +
-                '}';
-    }
+public record BCServerInfo(String name, String description, String icon, @SerializedName("is_public") boolean isPublic,
+                           @SerializedName("online_players") int playerCount, @SerializedName("player_names") String playerNames, @SerializedName("max_players") int playerLimit,
+                           @SerializedName("connect_online_mode") boolean onlineMode, @SerializedName("connect_version") String connectVersion, @SerializedName("connect_socket") String socketAddress, @SerializedName("connect_protocol") String protocol,
+                           BCVersionCategory version, @SerializedName("software_name") String softwareName, @SerializedName("software_version") String softwareVersion,
+                           @SerializedName("last_ping_time") long lastPingTime) {
 }
