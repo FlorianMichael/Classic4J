@@ -17,101 +17,49 @@
 
 package de.florianmichael.classic4j.model.betacraft;
 
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * This class represents a list of servers on the BetaCraft server list. It is used to parse the HTML document returned by the BetaCraft server list.
  *
  * @param servers The servers on the BetaCraft server list.
  */
-public record BCServerList(List<BCServerInfo> servers) {
-
-    /**
-     * Parses the HTML document returned by the BetaCraft server list and returns a {@link BCServerList} object.
-     *
-     * @param document The HTML document returned by the BetaCraft server list.
-     * @return A {@link BCServerList} object.
-     */
-    public static BCServerList fromDocument(final Document document) {
-        final List<BCServerInfo> servers = new LinkedList<>();
-        final Elements serverElements = document.getElementsByClass("online");
-
-        for (final Element serverElement : serverElements) {
-            final String joinUrl = serverElement.attr("href");
-
-            if (joinUrl.length() < 7) {
-                continue;
-            }
-
-            final String substringedUrl = joinUrl.substring(7);
-            final String[] urlParts = substringedUrl.split("/");
-
-            if (urlParts.length != 4) {
-                continue;
-            }
-
-            final String hostAndPort = urlParts[0];
-            final int portColonIndex = hostAndPort.lastIndexOf(":");
-
-            if (portColonIndex == -1) {
-                continue;
-            }
-
-            // We're using substring here in-case someone uses IPv6 for their server.
-            final String portStr = hostAndPort.substring(Math.min(portColonIndex + 1, hostAndPort.length() - 1));
-            final int port;
-
-            try {
-                port = Integer.parseInt(portStr);
-            } catch (NumberFormatException ignored) {
-                continue;
-            }
-
-            // We're doing this .replace operation because some server entries somehow manage to duplicate their port.
-            final String host = hostAndPort.substring(0, portColonIndex).replace(":" + port, "");
-            final String versionIdentifier = urlParts[3];
-            final BCVersion version = BCVersion.fromString(versionIdentifier);
-            final String rawNameStr = serverElement.text();
-            final int firstIndexOfClosingSquareBracket = rawNameStr.indexOf("]");
-
-            if (firstIndexOfClosingSquareBracket == -1) {
-                continue;
-            }
-
-            final String halfParsedNameStr = rawNameStr.substring(Math.min(firstIndexOfClosingSquareBracket + 2, rawNameStr.length() - 1));
-            final boolean onlineMode = halfParsedNameStr.endsWith("[Online Mode]");
-            final String parsedNameStr = onlineMode ? halfParsedNameStr.replace("[Online Mode]", "") : halfParsedNameStr;
-            final BCServerInfo server = new BCServerInfo(parsedNameStr, host, port, version, onlineMode, joinUrl, versionIdentifier);
-
-            servers.add(server);
-        }
-        return new BCServerList(servers);
+public record BCServerList(List<BCServerInfoSpec> servers) {
+    public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson, final URI uri, final Class<? extends BCServerInfoSpec> infoSpec) {
+        return CompletableFuture.supplyAsync(() -> new BCServerList(gson.fromJson(httpClient.sendAsync(HttpRequest.newBuilder(uri).build(), BodyHandlers.ofString()).join().body(), JsonArray.class)
+            .asList()
+            .stream()
+            .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
+            .toList()
+        ));
     }
 
     @Override
-    public List<BCServerInfo> servers() {
+    public List<BCServerInfoSpec> servers() {
         return Collections.unmodifiableList(this.servers);
     }
 
-    public List<BCServerInfo> serversOfVersion(final BCVersion version) {
-        final List<BCServerInfo> serverListCopy = this.servers();
+    public List<BCServerInfoSpec> serversOfVersionCategory(final BCVersionCategory version) {
+        final List<BCServerInfoSpec> serverListCopy = this.servers();
 
-        return serverListCopy.stream().filter(s -> s.version().equals(version)).toList();
+        return serverListCopy.stream().filter(s -> s.versionCategory().equals(version)).toList();
     }
 
-    public List<BCServerInfo> serversWithOnlineMode(final boolean on) {
+    public List<BCServerInfoSpec> serversWithOnlineMode(final boolean on) {
         return this.servers().stream().filter(s -> s.onlineMode() == on).toList();
     }
 
-    public List<BCServerInfo> withGameVersion(final String gameVersion) {
-        return this.servers().stream().filter(s -> s.gameVersion().equals(gameVersion)).toList();
+    public List<BCServerInfoSpec> withConnectVersion(final String connectVersion) {
+        return this.servers().stream().filter(s -> s.connectVersion().equals(connectVersion)).toList();
     }
 
     @Override
