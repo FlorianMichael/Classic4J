@@ -16,7 +16,7 @@ You can also find instructions how to implement it into your build script there.
 If you just want the latest jar file you can download it from the GitHub [Actions](https://github.com/FlorianMichael/Classic4J/actions) or use the [Release](https://github.com/FlorianMichael/Classic4J/releases).
 
 ### Requirements
-This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) and [JSoup](https://jsoup.org/) in your class path. <br>
+This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path. <br>
 The **minimum** Java version is Java **16**.
 
 ### Projects implementing Classic4J
@@ -38,13 +38,13 @@ The internal API is located in the **de.florianmichael.classic4j.util** package.
 ### BetaCraft
 Classic4J allows you to dump the server list from betacraft.uk and generate a MP Pass from the BetaCraft launcher, keep in mind that for the MP Pass generator you need to implement the ExternalInterface from above
 ```java
-BetaCraftHandler.requestServerList(bcServerList -> {
-    System.out.println(bcServerList.servers().size());
-    System.out.println(bcServerList.serversOfVersion(BCVersion.ALPHA).size());
-    System.out.println(bcServerList.serversWithOnlineMode(false)); // offline mode
+BetaCraftHandler.requestServerList(serverList -> {
+    System.out.println(serverList.servers().size());
+    System.out.println(serverList.serversOfVersion(BCVersion.ALPHA).size());
+    System.out.println(serverList.serversWithOnlineMode(false)); // offline mode
 });
 
-final String mpPass = JSPBetaCraftHandler.requestMPPass("lyzev", "kevinzockt.de", 25565, serverId -> {
+final String mpPass = BetaCraftHandler.requestMPPass("<username>", "<server address>", 25565, serverId -> {
     // You have to call the joinServer Statement in here     
 });
 ```
@@ -52,7 +52,7 @@ final String mpPass = JSPBetaCraftHandler.requestMPPass("lyzev", "kevinzockt.de"
 ### ClassiCube
 Classic4J allows you to authenticate with ClassiCube and retrieve the server list
 ```java
-final CCAccount account = new CCAccount("EnZaXD", "example");
+final CCAccount account = new CCAccount("<username>", "<passowrd>");
 ClassiCubeHandler.requestAuthentication(account, null, new LoginProcessHandler() {
     @Override
     public void handleMfa(CCAccount account) {
@@ -73,7 +73,7 @@ ClassiCubeHandler.requestAuthentication(account, null, new LoginProcessHandler()
 ```
 Once you are authenticated, you can then dump the server list like BetaCraft, other API requests like searching are also implemented
 ```java
-ClassiCubeHandler.requestServerList(account, listModel -> {
-    System.out.println(listModel.servers().size());
+ClassiCubeHandler.requestServerList(account, serverList -> {
+    System.out.println(serverList.servers().size());
 });
 ```
