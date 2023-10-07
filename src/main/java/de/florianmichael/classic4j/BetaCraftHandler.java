@@ -18,6 +18,9 @@
 package de.florianmichael.classic4j;
 
 import de.florianmichael.classic4j.api.JoinServerInterface;
+import de.florianmichael.classic4j.model.betacraft.BCServerList;
+import de.florianmichael.classic4j.request.betacraft.BCServerListRequest;
+import de.florianmichael.classic4j.util.WebUtils;
 
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -26,20 +29,22 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 /**
  * This class provides methods to interact with the BetaCraft API. These API methods are used to request the Multiplayer Pass for a server.
  */
-public class JSPBetaCraftHandler {
+public class BetaCraftHandler {
     public final static URI GET_MP_PASS = URI.create("http://api.betacraft.uk/getmppass.jsp");
 
     /**
      * Requests the Multiplayer Pass for a server from the BetaCraft API.
+     *
      * @param username            The username of the player.
      * @param ip                  The IP of the server.
      * @param port                The port of the server.
      * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
-     * @return                    The Multiplayer Pass for the server.
+     * @return The Multiplayer Pass for the server.
      */
     public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface) {
         try {
@@ -65,9 +70,66 @@ public class JSPBetaCraftHandler {
     }
 
     /**
+     * Requests the server list from the BetaCraft API.
+     *
+     * @param complete The consumer that will be called when the request is complete.
+     */
+    public static void requestV2ServerList(final Consumer<BCServerList> complete) {
+        requestV2ServerList(complete, Throwable::printStackTrace);
+    }
+
+    /**
+     * Requests the server list from the BetaCraft API.
+     *
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
+    public static void requestV2ServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+        requestServerList(BCServerListRequest.V2, complete, throwableConsumer);
+    }
+
+    /**
+     * Requests the server list from the BetaCraft API.
+     *
+     * @param complete The consumer that will be called when the request is complete.
+     */
+    public static void requestV1ServerList(final Consumer<BCServerList> complete) {
+        requestV1ServerList(complete, Throwable::printStackTrace);
+    }
+
+    /**
+     * Requests the server list from the BetaCraft API.
+     *
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
+    public static void requestV1ServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+        requestServerList(BCServerListRequest.V1, complete, throwableConsumer);
+    }
+
+    /**
+     * Requests the server list from the BetaCraft API. This method is used internally by {@link #requestV1ServerList(Consumer)} and {@link #requestV2ServerList(Consumer)}.
+     *
+     * @param request           The {@link BCServerListRequest} to use for the request.
+     * @param complete          The consumer that will be called when the request is complete.
+     * @param throwableConsumer The consumer that will be called when an error occurs.
+     */
+    private static void requestServerList(final BCServerListRequest request, final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+        request.send(WebUtils.HTTP_CLIENT, ClassiCubeHandler.GSON).whenComplete((bcServerList, throwable) -> {
+            if (throwable != null) {
+                throwableConsumer.accept(throwable);
+                return;
+            }
+
+            complete.accept(bcServerList);
+        });
+    }
+
+    /**
      * Hashes the input using SHA-1.
+     *
      * @param input The input to hash.
-     * @return      The hashed input.
+     * @return The hashed input.
      */
     private static String sha1(final byte[] input) {
         try {

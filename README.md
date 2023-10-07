@@ -23,7 +23,7 @@ The **minimum** Java version is Java **16**.
 1. [ViaFabricPlus](https://github.com/FlorianMichael/ViaFabricPlus): Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
 
 ## Structure
-There is no main class, there are three classes in the package: **BetaCraftHandler**, **ClassiCubeHandler** and **JSPBetaCraftHandler**, in these classes are the API requests for the respective platforms.
+There is no main class, there are three classes in the package: **BetaCraftHandler** and **ClassiCubeHandler**, in these classes are the API requests for the respective platforms.
 
 All API Requests are asynchronous and require a callback, the callback is called on the main thread, so you can safely modify the UI in the callback. 
 They are located in the **de.florianmichael.classic4j.request** package.
@@ -31,6 +31,8 @@ They are located in the **de.florianmichael.classic4j.request** package.
 All Models are located in the **de.florianmichael.classic4j.model** and **de.florianmichael.classic4j.api** package.
 
 The internal API is located in the **de.florianmichael.classic4j.util** package. 
+
+**You can either use the high-level frontend for API requests using the Handler classes or use the low-level backend using the Request classes.**
 
 ## Example usage
 ### BetaCraft

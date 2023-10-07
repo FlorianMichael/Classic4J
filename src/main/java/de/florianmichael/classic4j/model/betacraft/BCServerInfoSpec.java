@@ -20,22 +20,39 @@ package de.florianmichael.classic4j.model.betacraft;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This interface represents a BetaCraft server info specification.
+ */
 public interface BCServerInfoSpec {
-  String name();
-  String description();
-  default Optional<byte[]> icon() {
-    return Optional.empty();
-  }
-  boolean isPublic();
-  int playerCount();
-  List<String> playerNames();
-  int playerLimit();
-  boolean onlineMode();
-  String connectVersion();
-  String socketAddress();
-  String protocol();
-  BCVersionCategory versionCategory();
-  String softwareName();
-  String softwareVersion();
-  long lastPingTime();
+    String name();
+
+    String description();
+
+    default Optional<byte[]> icon() {
+        return Optional.empty();
+    }
+
+    boolean isPublic();
+
+    int playerCount();
+
+    List<String> playerNames();
+
+    int playerLimit();
+
+    boolean onlineMode();
+
+    String connectVersion();
+
+    String socketAddress();
+
+    String protocol();
+
+    BCVersionCategory versionCategory();
+
+    String softwareName();
+
+    String softwareVersion();
+
+    long lastPingTime();
 }

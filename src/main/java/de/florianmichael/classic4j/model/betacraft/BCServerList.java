@@ -19,6 +19,7 @@ package de.florianmichael.classic4j.model.betacraft;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -36,10 +37,10 @@ import java.util.concurrent.CompletableFuture;
 public record BCServerList(List<BCServerInfoSpec> servers) {
     public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson, final URI uri, final Class<? extends BCServerInfoSpec> infoSpec) {
         return CompletableFuture.supplyAsync(() -> new BCServerList(gson.fromJson(httpClient.sendAsync(HttpRequest.newBuilder(uri).build(), BodyHandlers.ofString()).join().body(), JsonArray.class)
-            .asList()
-            .stream()
-            .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
-            .toList()
+                .asList()
+                .stream()
+                .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
+                .toList()
         ));
     }
 
