@@ -47,6 +47,20 @@ public class BetaCraftHandler {
      * @return The Multiplayer Pass for the server.
      */
     public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface) {
+        return requestMPPass(username, ip, port, joinServerInterface, Throwable::printStackTrace);
+    }
+
+    /**
+     * Requests the Multiplayer Pass for a server from the BetaCraft API.
+     *
+     * @param username            The username of the player.
+     * @param ip                  The IP of the server.
+     * @param port                The port of the server.
+     * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
+     * @param throwableConsumer   The consumer that will be called when an error occurs.
+     * @return The Multiplayer Pass for the server.
+     */
+    public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface, final Consumer<Throwable> throwableConsumer) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
 
@@ -64,7 +78,7 @@ public class BetaCraftHandler {
 
             return response.toString();
         } catch (Throwable t) {
-            t.printStackTrace();
+            throwableConsumer.accept(t);
             return "0";
         }
     }
