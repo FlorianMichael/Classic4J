@@ -9,7 +9,7 @@ If you just want to talk or need help with Classic4J feel free to join my
 
 ## How to add this to your project
 ### Gradle/Maven
-To use Classic4J with Gradle/Maven you can use this [Maven Central](https://mvnrepository.com/artifact/de.florianmichael/Classic4J), [Lenni0451 server](https://maven.lenni0451.net/#/releases/de/florianmichael/Classic4J) or [Jitpack](https://jitpack.io/#FlorianMichael/Classic4J).  
+To use Classic4J with Gradle/Maven you can use [Maven Central](https://mvnrepository.com/artifact/de.florianmichael/Classic4J), [Lenni0451 server](https://maven.lenni0451.net/#/releases/de/florianmichael/Classic4J) or [Jitpack](https://jitpack.io/#FlorianMichael/Classic4J).  
 You can also find instructions how to implement it into your build script there.
 
 ### Jar File
