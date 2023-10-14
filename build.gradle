@@ -1,6 +1,7 @@
 plugins {
     id "java"
     id "maven-publish"
+    id "signing"
 }
 
 archivesBaseName = "Classic4J"
@@ -58,6 +59,17 @@ publishing {
                 basic(BasicAuthentication)
             }
         }
+        maven {
+            name = "ossrh"
+            def releasesUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = project.version.endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
     }
     publications {
         maven(MavenPublication) {
@@ -90,4 +102,14 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    setRequired false
+    sign configurations.archives
+    sign publishing.publications.maven
+}
+
+project.tasks.withType(PublishToMavenRepository).forEach {
+    it.dependsOn(project.tasks.withType(Sign))
 }
