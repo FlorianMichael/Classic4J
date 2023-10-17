@@ -18,6 +18,7 @@
 package de.florianmichael.classic4j.request.betacraft;
 
 import com.google.gson.Gson;
+import de.florianmichael.classic4j.BetaCraftHandler;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.impl.BCServerInfov1;
@@ -28,8 +29,8 @@ import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
 public enum BCServerListRequest {
-    V1(URI.create("https://api.betacraft.uk/server_list.jsp"), BCServerInfov1.class),
-    V2(URI.create("https://api.betacraft.uk/v2/server_list"), BCServerInfov2.class);
+    V1(BetaCraftHandler.BETACRAFT_ROOT_URI.resolve("/server_list.jsp"), BCServerInfov1.class),
+    V2(BetaCraftHandler.BETACRAFT_ROOT_URI.resolve("/v2/server_list"), BCServerInfov2.class);
 
     private final URI uri;
     private final Class<? extends BCServerInfoSpec> infoSpec;

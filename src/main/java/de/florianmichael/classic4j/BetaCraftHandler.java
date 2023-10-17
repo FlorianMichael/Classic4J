@@ -35,7 +35,9 @@ import java.util.function.Consumer;
  * This class provides methods to interact with the BetaCraft API. These API methods are used to request the Multiplayer Pass for a server.
  */
 public class BetaCraftHandler {
-    public final static URI GET_MP_PASS = URI.create("http://api.betacraft.uk/getmppass.jsp");
+    public final static URI BETACRAFT_ROOT_URI = URI.create("https://api.betacraft.uk");
+
+    public final static URI GET_MP_PASS = BETACRAFT_ROOT_URI.resolve("/getmppass.jsp");
 
     /**
      * Requests the Multiplayer Pass for a server from the BetaCraft API.
@@ -65,6 +67,8 @@ public class BetaCraftHandler {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
 
             joinServerInterface.sendAuthRequest(sha1(server.getBytes()));
+
+            System.out.println(GET_MP_PASS + "?user=" + username + "&server=" + server);
 
             final InputStream connection = new URL(GET_MP_PASS + "?user=" + username + "&server=" + server).openStream();
             Scanner scanner = new Scanner(connection);

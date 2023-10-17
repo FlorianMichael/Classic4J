@@ -159,8 +159,7 @@ public class ClassiCubeHandler {
                     return;
                 }
                 if (loginResponse.shouldError()) {
-                    final String errorDisplay = loginResponse.getErrorDisplay();
-                    processHandler.handleException(new LoginException(errorDisplay));
+                    processHandler.handleException(new LoginException(loginResponse.getErrorDisplay()));
                     return;
                 }
                 processHandler.handleSuccessfulLogin(account);
