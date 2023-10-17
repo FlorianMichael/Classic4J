@@ -4,9 +4,11 @@ plugins {
     id "signing"
 }
 
-archivesBaseName = project.maven_name
-version = project.maven_version
-group = project.maven_group
+base {
+    archivesName = project.maven_name
+    version = project.maven_version
+    group = project.maven_group
+}
 
 repositories {
     mavenCentral()
@@ -19,6 +21,10 @@ dependencies {
 java {
     withSourcesJar()
     withJavadocJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 
     sourceCompatibility = JavaVersion.VERSION_16
     targetCompatibility = JavaVersion.VERSION_16
