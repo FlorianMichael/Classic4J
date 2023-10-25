@@ -68,8 +68,6 @@ public class BetaCraftHandler {
 
             joinServerInterface.sendAuthRequest(sha1(server.getBytes()));
 
-            System.out.println(GET_MP_PASS + "?user=" + username + "&server=" + server);
-
             final InputStream connection = new URL(GET_MP_PASS + "?user=" + username + "&server=" + server).openStream();
             Scanner scanner = new Scanner(connection);
             StringBuilder response = new StringBuilder();
