@@ -23,6 +23,7 @@ import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.util.WebUtils;
 
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -45,12 +46,12 @@ public class CCServerInfoRequest {
      * @param serverHashes The hashes of the servers to get information about.
      * @return             A CompletableFuture containing the response.
      */
-    public static CompletableFuture<CCServerList> send(final CCAccount account, final List<String> serverHashes) {
+    public static CompletableFuture<CCServerList> send(final HttpClient client, final CCAccount account, final List<String> serverHashes) {
         return CompletableFuture.supplyAsync(() -> {
             final URI uri = generateUri(serverHashes);
 
             final HttpRequest request = WebUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(uri));
-            final HttpResponse<String> response = WebUtils.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
+            final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
             WebUtils.updateCookies(account.cookieStore, response);
 

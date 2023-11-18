@@ -22,6 +22,7 @@ import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.util.WebUtils;
 
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
@@ -36,11 +37,11 @@ public class CCAuthenticationTokenRequest {
      * @param account The account to get the token for.
      * @return        The response.
      */
-    public static CompletableFuture<CCAuthenticationResponse> send(final CCAccount account) {
+    public static CompletableFuture<CCAuthenticationResponse> send(final HttpClient client, final CCAccount account) {
         return CompletableFuture.supplyAsync(() -> {
             final HttpRequest request = HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.AUTHENTICATION_URI).build();
 
-            final HttpResponse<String> response = WebUtils.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
+            final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
             WebUtils.updateCookies(account.cookieStore, response);
             final String responseBody = response.body();

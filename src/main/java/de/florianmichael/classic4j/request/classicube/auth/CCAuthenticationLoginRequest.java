@@ -24,6 +24,7 @@ import de.florianmichael.classic4j.model.classicube.account.CCAuthenticationData
 import de.florianmichael.classic4j.util.model.Parameter;
 import de.florianmichael.classic4j.util.WebUtils;
 
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +41,7 @@ public class CCAuthenticationLoginRequest {
      * @param loginCode        The login code.
      * @return                 The response.
      */
-    public static CompletableFuture<CCAuthenticationResponse> send(final CCAccount account, final CCAuthenticationResponse previousResponse, final String loginCode) {
+    public static CompletableFuture<CCAuthenticationResponse> send(final HttpClient client, final CCAccount account, final CCAuthenticationResponse previousResponse, final String loginCode) {
         return CompletableFuture.supplyAsync(() -> {
             final CCAuthenticationData authenticationData = new CCAuthenticationData(account.username(), account.password(), previousResponse.token, loginCode);
 
@@ -56,7 +57,7 @@ public class CCAuthenticationLoginRequest {
                     .uri(ClassiCubeHandler.AUTHENTICATION_URI)
                     .header("content-type", "application/x-www-form-urlencoded"));
 
-            final HttpResponse<String> response = WebUtils.HTTP_CLIENT.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
+            final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
             WebUtils.updateCookies(account.cookieStore, response);
 
