@@ -1,12 +1,12 @@
 /*
  * This file is part of Classic4J - https://github.com/FlorianMichael/Classic4J
- * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2023-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import java.util.Objects;
  * This class represents the data needed to authenticate with the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
  */
 public class CCAuthenticationData {
+
     private final String username;
     private final String password;
     private final String previousToken;
@@ -86,4 +87,5 @@ public class CCAuthenticationData {
                 ", loginCode='" + loginCode + '\'' +
                 '}';
     }
+
 }

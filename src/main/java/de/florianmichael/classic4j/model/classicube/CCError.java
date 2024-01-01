@@ -1,12 +1,12 @@
 /*
  * This file is part of Classic4J - https://github.com/FlorianMichael/Classic4J
- * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
+ * Copyright (C) 2023-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,6 +21,7 @@ package de.florianmichael.classic4j.model.classicube;
  * This enum represents an error that can occur when logging in to ClassiCube.
  */
 public enum CCError {
+
     TOKEN("Incorrect token. Is your ViaFabricPlus out of date?"),
     USERNAME("Invalid username."),
     PASSWORD("Invalid password."),
@@ -32,4 +33,5 @@ public enum CCError {
     CCError(final String description) {
         this.description = description;
     }
+
 }

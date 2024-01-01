@@ -1,6 +1,6 @@
 /*
- * This file is part of RClasses - https://github.com/FlorianMichael/RClasses
- * Copyright (C) 2023 FlorianMichael/EnZaXD and contributors
+ * This file is part of Classic4J - https://github.com/FlorianMichael/Classic4J
+ * Copyright (C) 2023-2024 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
