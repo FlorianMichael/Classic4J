@@ -27,8 +27,18 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This class is used to get the server list from the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ */
 public class CCServerListRequest {
 
+    /**
+     * Sends a request to the ClassiCube server list to get the server list.
+     *
+     * @param client  The HttpClient to use.
+     * @param account The account to use for the request.
+     * @return A CompletableFuture containing the response.
+     */
     public static CompletableFuture<CCServerList> send(final HttpClient client, final CCAccount account) {
         return CompletableFuture.supplyAsync(() -> {
             final HttpRequest request = WebUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(ClassiCubeHandler.SERVER_LIST_INFO_URI));
