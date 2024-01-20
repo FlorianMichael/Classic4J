@@ -18,4 +18,5 @@
 package de.florianmichael.classic4j.util.model;
 
 public record Parameter(String name, String value) {
+
 }
