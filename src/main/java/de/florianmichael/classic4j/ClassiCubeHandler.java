@@ -26,7 +26,7 @@ import de.florianmichael.classic4j.request.classicube.server.CCServerInfoRequest
 import de.florianmichael.classic4j.request.classicube.server.CCServerListRequest;
 import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.classic4j.util.WebUtils;
+import de.florianmichael.classic4j.util.HttpClientUtils;
 
 import javax.security.auth.login.LoginException;
 import java.net.URI;
@@ -66,7 +66,7 @@ public class ClassiCubeHandler {
      * @param throwableConsumer The consumer that will be called when an error occurs.
      */
     public static void requestServerList(final CCAccount account, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        CCServerListRequest.send(WebUtils.HTTP_CLIENT, account).whenComplete((ccServerList, throwable) -> {
+        CCServerListRequest.send(HttpClientUtils.HTTP_CLIENT, account).whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
                 return;
@@ -116,7 +116,7 @@ public class ClassiCubeHandler {
      * @param throwableConsumer The consumer that will be called when an error occurs.
      */
     public static void requestServerInfo(final CCAccount account, final List<String> serverHashes, final Consumer<CCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        CCServerInfoRequest.send(WebUtils.HTTP_CLIENT, account, serverHashes).whenComplete((ccServerList, throwable) -> {
+        CCServerInfoRequest.send(HttpClientUtils.HTTP_CLIENT, account, serverHashes).whenComplete((ccServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
                 return;
@@ -138,7 +138,7 @@ public class ClassiCubeHandler {
      * @param processHandler The handler to use for the login process.
      */
     public static void requestAuthentication(final CCAccount account, final String loginCode, final LoginProcessHandler processHandler) {
-        CCAuthenticationTokenRequest.send(WebUtils.HTTP_CLIENT, account).whenComplete((initialTokenResponse, throwable) -> {
+        CCAuthenticationTokenRequest.send(HttpClientUtils.HTTP_CLIENT, account).whenComplete((initialTokenResponse, throwable) -> {
             if (throwable != null) {
                 processHandler.handleException(throwable);
                 return;
@@ -151,7 +151,7 @@ public class ClassiCubeHandler {
             }
             account.token = initialTokenResponse.token;
 
-            CCAuthenticationLoginRequest.send(WebUtils.HTTP_CLIENT, account, initialTokenResponse, loginCode).whenComplete((loginResponse, throwable1) -> {
+            CCAuthenticationLoginRequest.send(HttpClientUtils.HTTP_CLIENT, account, initialTokenResponse, loginCode).whenComplete((loginResponse, throwable1) -> {
                 if (throwable1 != null) {
                     processHandler.handleException(throwable1);
                     return;

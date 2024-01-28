@@ -20,7 +20,7 @@ package de.florianmichael.classic4j;
 import de.florianmichael.classic4j.api.JoinServerInterface;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.request.betacraft.BCServerListRequest;
-import de.florianmichael.classic4j.util.WebUtils;
+import de.florianmichael.classic4j.util.HttpClientUtils;
 
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -132,7 +132,7 @@ public class BetaCraftHandler {
      * @param throwableConsumer The consumer that will be called when an error occurs.
      */
     private static void requestServerList(final BCServerListRequest request, final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        request.send(WebUtils.HTTP_CLIENT, ClassiCubeHandler.GSON).whenComplete((bcServerList, throwable) -> {
+        request.send(HttpClientUtils.HTTP_CLIENT, ClassiCubeHandler.GSON).whenComplete((bcServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
                 return;

@@ -17,16 +17,13 @@
 
 package de.florianmichael.classic4j.util;
 
-import de.florianmichael.classic4j.util.model.CookieStore;
-import de.florianmichael.classic4j.util.model.Parameter;
-
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-public class WebUtils {
+public class HttpClientUtils {
 
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 

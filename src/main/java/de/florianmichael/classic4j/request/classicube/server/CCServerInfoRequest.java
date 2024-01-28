@@ -20,7 +20,7 @@ package de.florianmichael.classic4j.request.classicube.server;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.classic4j.util.WebUtils;
+import de.florianmichael.classic4j.util.HttpClientUtils;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -50,10 +50,10 @@ public class CCServerInfoRequest {
         return CompletableFuture.supplyAsync(() -> {
             final URI uri = generateUri(serverHashes);
 
-            final HttpRequest request = WebUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(uri));
+            final HttpRequest request = HttpClientUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder().GET().uri(uri));
             final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            WebUtils.updateCookies(account.cookieStore, response);
+            HttpClientUtils.updateCookies(account.cookieStore, response);
 
             final String body = response.body();
 

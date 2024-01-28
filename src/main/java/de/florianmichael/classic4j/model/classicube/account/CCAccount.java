@@ -18,7 +18,7 @@
 package de.florianmichael.classic4j.model.classicube.account;
 
 import com.google.gson.JsonObject;
-import de.florianmichael.classic4j.util.model.CookieStore;
+import de.florianmichael.classic4j.util.CookieStore;
 
 import java.util.Objects;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.util.model;
+package de.florianmichael.classic4j.util;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -65,13 +65,10 @@ public class CookieStore {
     }
 
     public void mergeFromResponse(HttpResponse<?> response) {
-        final Optional<String> setCookieHeaderOptional = response.headers()
-                .firstValue("set-cookie");
-
+        final Optional<String> setCookieHeaderOptional = response.headers().firstValue("set-cookie");
         if (setCookieHeaderOptional.isEmpty()) {
             return;
         }
-
         final String setCookieHeader = setCookieHeaderOptional.get();
         final CookieStore store = CookieStore.parse(setCookieHeader);
 

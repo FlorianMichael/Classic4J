@@ -20,7 +20,7 @@ package de.florianmichael.classic4j.request.classicube.auth;
 import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
-import de.florianmichael.classic4j.util.WebUtils;
+import de.florianmichael.classic4j.util.HttpClientUtils;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -43,7 +43,7 @@ public class CCAuthenticationTokenRequest {
 
             final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            WebUtils.updateCookies(account.cookieStore, response);
+            HttpClientUtils.updateCookies(account.cookieStore, response);
             final String responseBody = response.body();
             return CCAuthenticationResponse.fromJson(responseBody);
         });

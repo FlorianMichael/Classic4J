@@ -21,8 +21,8 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.account.CCAuthenticationData;
-import de.florianmichael.classic4j.util.model.Parameter;
-import de.florianmichael.classic4j.util.WebUtils;
+import de.florianmichael.classic4j.util.Parameter;
+import de.florianmichael.classic4j.util.HttpClientUtils;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -45,21 +45,21 @@ public class CCAuthenticationLoginRequest {
         return CompletableFuture.supplyAsync(() -> {
             final CCAuthenticationData authenticationData = new CCAuthenticationData(account.username(), account.password(), previousResponse.token, loginCode);
 
-            final String requestBody = WebUtils.createRequestBody(
+            final String requestBody = HttpClientUtils.createRequestBody(
                     new Parameter("username", authenticationData.username()),
                     new Parameter("password", authenticationData.password()),
                     new Parameter("token", authenticationData.previousToken()),
                     new Parameter("login_code", authenticationData.loginCode())
             );
 
-            final HttpRequest request = WebUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder()
+            final HttpRequest request = HttpClientUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .uri(ClassiCubeHandler.AUTHENTICATION_URI)
                     .header("content-type", "application/x-www-form-urlencoded"));
 
             final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 
-            WebUtils.updateCookies(account.cookieStore, response);
+            HttpClientUtils.updateCookies(account.cookieStore, response);
 
             final String responseBody = response.body();
             return CCAuthenticationResponse.fromJson(responseBody);

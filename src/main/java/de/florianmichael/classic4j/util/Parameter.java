@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package de.florianmichael.classic4j.util.model;
+package de.florianmichael.classic4j.util;
 
 public record Parameter(String name, String value) {
 
