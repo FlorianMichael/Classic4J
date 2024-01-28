@@ -39,16 +39,16 @@ import java.util.function.Consumer;
  */
 public class ClassiCubeHandler {
 
-    public final static Gson GSON = new GsonBuilder().serializeNulls().create();
+    public static final Gson GSON = new GsonBuilder().serializeNulls().create();
 
     /**
      * The URI to the ClassiCube root.
      */
-    public final static URI CLASSICUBE_ROOT_URI = URI.create("https://www.classicube.net");
+    public static final URI CLASSICUBE_ROOT_URI = URI.create("https://www.classicube.net");
 
-    public final static URI AUTHENTICATION_URI = CLASSICUBE_ROOT_URI.resolve("/api/login/");
-    public final static URI SERVER_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/server/");
-    public final static URI SERVER_LIST_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/servers/");
+    public static final URI AUTHENTICATION_URI = CLASSICUBE_ROOT_URI.resolve("/api/login/");
+    public static final URI SERVER_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/server/");
+    public static final URI SERVER_LIST_INFO_URI = CLASSICUBE_ROOT_URI.resolve("/api/servers/");
 
     /**
      * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.

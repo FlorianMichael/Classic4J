@@ -36,9 +36,9 @@ import java.util.function.Consumer;
  */
 public class BetaCraftHandler {
 
-    public final static URI BETACRAFT_ROOT_URI = URI.create("https://api.betacraft.uk");
+    public static final URI BETACRAFT_ROOT_URI = URI.create("https://api.betacraft.uk");
 
-    public final static URI GET_MP_PASS = BETACRAFT_ROOT_URI.resolve("/getmppass.jsp");
+    public static final URI GET_MP_PASS = BETACRAFT_ROOT_URI.resolve("/getmppass.jsp");
 
     /**
      * Requests the Multiplayer Pass for a server from the BetaCraft API.

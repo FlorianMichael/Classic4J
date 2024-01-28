@@ -28,7 +28,7 @@ import java.nio.charset.StandardCharsets;
 
 public class WebUtils {
 
-    public final static HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
+    public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 
     public static String createRequestBody(final Parameter... parameters) {
         final StringBuilder builder = new StringBuilder();
