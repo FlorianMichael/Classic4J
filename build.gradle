@@ -5,9 +5,10 @@ plugins {
 }
 
 base {
+    group = project.maven_group
     archivesName = project.maven_name
     version = project.maven_version
-    group = project.maven_group
+    description = project.maven_description
 }
 
 repositories {
@@ -72,7 +73,7 @@ publishing {
 
             pom {
                 name = artifactId
-                description = "Java implementation of the ClassiCube and BetaCraft protocol"
+                description = project.description
                 url = "https://github.com/FlorianMichael/Classic4J"
                 licenses {
                     license {
