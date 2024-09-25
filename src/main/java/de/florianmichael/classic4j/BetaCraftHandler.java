@@ -107,7 +107,7 @@ public class BetaCraftHandler {
      */
     public static void authenticate(final JoinServerInterface joinServerInterface, final Consumer<Throwable> throwableConsumer) {
         try {
-            joinServerInterface.sendAuthRequest(sha1(IPUtils.get().getBytes(StandardCharsets.UTF_8)));
+            joinServerInterface.sendAuthRequest(sha1(IPUtils.get().getBytes()));
         } catch (Throwable t) {
             throwableConsumer.accept(t);
         }
