@@ -38,6 +38,7 @@ public class BetaCraftHandler {
 
     public static final URI BETACRAFT_ROOT_URI = URI.create("https://api.betacraft.uk");
 
+    @Deprecated
     public static final URI GET_MP_PASS = BETACRAFT_ROOT_URI.resolve("/getmppass.jsp");
 
     /**
@@ -49,6 +50,7 @@ public class BetaCraftHandler {
      * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
      * @return The Multiplayer Pass for the server.
      */
+    @Deprecated
     public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface) {
         return requestMPPass(username, ip, port, joinServerInterface, Throwable::printStackTrace);
     }
@@ -63,6 +65,7 @@ public class BetaCraftHandler {
      * @param throwableConsumer   The consumer that will be called when an error occurs.
      * @return The Multiplayer Pass for the server.
      */
+    @Deprecated
     public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface, final Consumer<Throwable> throwableConsumer) {
         try {
             final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
@@ -110,6 +113,7 @@ public class BetaCraftHandler {
      *
      * @param complete The consumer that will be called when the request is complete.
      */
+    @Deprecated
     public static void requestV1ServerList(final Consumer<BCServerList> complete) {
         requestV1ServerList(complete, Throwable::printStackTrace);
     }
@@ -120,6 +124,7 @@ public class BetaCraftHandler {
      * @param complete          The consumer that will be called when the request is complete.
      * @param throwableConsumer The consumer that will be called when an error occurs.
      */
+    @Deprecated
     public static void requestV1ServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         requestServerList(BCServerListRequest.V1, complete, throwableConsumer);
     }

@@ -24,6 +24,7 @@ import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
 import java.util.List;
 import java.util.UUID;
 
+@Deprecated
 public record BCServerInfov1(Ping ping, Info info, boolean online,
                              @SerializedName("version_category") BCVersionCategory versionCategory) implements
         BCServerInfoSpec {

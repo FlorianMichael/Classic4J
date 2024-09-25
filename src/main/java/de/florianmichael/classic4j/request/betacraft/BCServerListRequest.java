@@ -30,6 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 public enum BCServerListRequest {
 
+    @Deprecated
     V1(BetaCraftHandler.BETACRAFT_ROOT_URI.resolve("/server_list.jsp"), BCServerInfov1.class),
     V2(BetaCraftHandler.BETACRAFT_ROOT_URI.resolve("/v2/server_list"), BCServerInfov2.class);
 
