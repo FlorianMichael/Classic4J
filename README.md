@@ -44,7 +44,13 @@ BetaCraftHandler.requestServerList(serverList -> {
     System.out.println(serverList.serversWithOnlineMode(false)); // offline mode
 });
 
+// LEGACY AUTHENTICATION WHICH IS NOT SUPPORTED ANYMORE
 final String mpPass = BetaCraftHandler.requestMPPass("<username>", "<server ip>", 25565 /* server port */, serverId -> {
+    // You have to call the joinServer Statement in here     
+});
+
+// You can authenticate to a BetaCraft server by doing:
+BetaCrafthandler.authenticate(serverId -> {
     // You have to call the joinServer Statement in here     
 });
 ```

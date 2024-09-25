@@ -21,11 +21,13 @@ import de.florianmichael.classic4j.api.JoinServerInterface;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.request.betacraft.BCServerListRequest;
 import de.florianmichael.classic4j.util.HttpClientUtils;
+import de.florianmichael.classic4j.util.IPUtils;
 
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.Scanner;
@@ -86,6 +88,28 @@ public class BetaCraftHandler {
         } catch (Throwable t) {
             throwableConsumer.accept(t);
             return "0";
+        }
+    }
+
+    /**
+     * Authenticates the player with the BetaCraft API. Replacement of {@link #requestMPPass(String, String, int, JoinServerInterface)}.
+     *
+     * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
+     */
+    public static void authenticate(final JoinServerInterface joinServerInterface) {
+        authenticate(joinServerInterface, Throwable::printStackTrace);
+    }
+
+    /**
+     * Authenticates the player with the BetaCraft API. Replacement of {@link #requestMPPass(String, String, int, JoinServerInterface, Consumer)}.
+     *
+     * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
+     */
+    public static void authenticate(final JoinServerInterface joinServerInterface, final Consumer<Throwable> throwableConsumer) {
+        try {
+            joinServerInterface.sendAuthRequest(sha1(IPUtils.get().getBytes(StandardCharsets.UTF_8)));
+        } catch (Throwable t) {
+            throwableConsumer.accept(t);
         }
     }
 
