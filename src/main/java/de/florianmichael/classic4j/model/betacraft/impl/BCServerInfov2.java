@@ -42,8 +42,8 @@ public record BCServerInfov2(String name,
                              @SerializedName("last_ping_time") long lastPingTime,
                              @SerializedName("category") BCVersionCategory versionCategory,
                              @SerializedName("game_version") String gameVersion,
-                             @SerializedName("protocol") String protocol,
-                             @SerializedName("socket") String socket,
+                             String protocol,
+                             String socket,
                              @SerializedName("v1_version") String v1Version,
                              @SerializedName("online_mode") boolean onlineMode
 ) implements BCServerInfoSpec {

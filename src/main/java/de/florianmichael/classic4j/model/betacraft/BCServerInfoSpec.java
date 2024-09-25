@@ -23,7 +23,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This interface represents a BetaCraft server info specification.
+ * This interface represents a BetaCraft server info specification. For version specific fields, cast down to the implementation class.
+ *
+ * @see de.florianmichael.classic4j.model.betacraft.impl.BCServerInfov1
+ * @see de.florianmichael.classic4j.model.betacraft.impl.BCServerInfov2
  */
 public interface BCServerInfoSpec {
 
