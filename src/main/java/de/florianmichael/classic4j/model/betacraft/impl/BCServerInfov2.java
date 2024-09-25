@@ -22,10 +22,7 @@ import com.google.gson.annotations.SerializedName;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
 
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -38,7 +35,7 @@ public record BCServerInfov2(String name,
                              Software software,
                              @SerializedName("max_players") int playerLimit,
                              @SerializedName("online_players") int playerCount,
-                             @SerializedName("players") String _playerNames,
+                             @SerializedName("players") Player[] players,
                              @SerializedName("last_ping_time") long lastPingTime,
                              @SerializedName("category") BCVersionCategory versionCategory,
                              @SerializedName("game_version") String gameVersion,
@@ -55,15 +52,6 @@ public record BCServerInfov2(String name,
         }
 
         return Optional.of(Base64.getDecoder().decode(this._icon));
-    }
-
-    @Override
-    public List<String> players() {
-        if (this._playerNames.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return Arrays.stream(this._playerNames.split(", ")).toList();
     }
 
 }

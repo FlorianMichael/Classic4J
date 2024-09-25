@@ -17,8 +17,10 @@
 
 package de.florianmichael.classic4j.model.betacraft;
 
+import de.florianmichael.classic4j.model.betacraft.impl.Player;
 import de.florianmichael.classic4j.model.betacraft.impl.Software;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,11 +44,11 @@ public interface BCServerInfoSpec {
 
     int playerCount();
 
-    List<String> players();
+    Player[] players();
 
     @Deprecated
     default List<String> playerNames() {
-        return players();
+        return Arrays.stream(players()).map(Player::username).toList();
     }
 
     int playerLimit();

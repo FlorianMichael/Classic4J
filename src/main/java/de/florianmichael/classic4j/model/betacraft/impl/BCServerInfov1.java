@@ -53,8 +53,8 @@ public record BCServerInfov1(
     }
 
     @Override
-    public List<String> players() {
-        return this.ping.players;
+    public Player[] players() {
+        return this.ping.players.stream().map(Player::new).toArray(Player[]::new);
     }
 
     @Override
