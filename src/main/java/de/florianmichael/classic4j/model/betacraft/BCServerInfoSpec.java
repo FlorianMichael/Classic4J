@@ -57,7 +57,7 @@ public interface BCServerInfoSpec {
 
     @Deprecated
     default String connectVersion() {
-        return gameVersion();
+        return v1Version();
     }
 
     String gameVersion();

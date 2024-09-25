@@ -79,7 +79,7 @@ public record BCServerInfov1(
 
     @Override
     public String v1Version() {
-        throw new UnsupportedOperationException("This method is not supported in API v1.");
+        return connectVersion();
     }
 
     @Override
