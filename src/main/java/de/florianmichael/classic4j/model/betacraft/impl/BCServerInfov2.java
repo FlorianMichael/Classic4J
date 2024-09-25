@@ -31,20 +31,22 @@ import java.util.Optional;
 /**
  * This class represents a server on the BetaCraft server list (API v2).
  */
-public record BCServerInfov2(String name, String description, String _icon,
+public record BCServerInfov2(String name,
+                             String description,
+                             @SerializedName("icon") String _icon,
                              @SerializedName("is_public") boolean isPublic,
-                             @SerializedName("online_players") int playerCount,
-                             @SerializedName("player_names") String _playerNames,
+                             Software software,
                              @SerializedName("max_players") int playerLimit,
-                             @SerializedName("connect_online_mode") boolean onlineMode,
-                             @SerializedName("connect_version") String connectVersion,
-                             @SerializedName("connect_socket") String socketAddress,
-                             @SerializedName("connect_protocol") String protocol,
-                             @SerializedName("version_category") BCVersionCategory versionCategory,
-                             @SerializedName("software_name") String softwareName,
-                             @SerializedName("software_version") String softwareVersion,
-                             @SerializedName("last_ping_time") long lastPingTime) implements
-        BCServerInfoSpec {
+                             @SerializedName("online_players") int playerCount,
+                             @SerializedName("players") String _playerNames,
+                             @SerializedName("last_ping_time") long lastPingTime,
+                             @SerializedName("category") BCVersionCategory versionCategory,
+                             @SerializedName("game_version") String gameVersion,
+                             @SerializedName("protocol") String protocol,
+                             @SerializedName("socket") String socket,
+                             @SerializedName("v1_version") String v1Version,
+                             @SerializedName("online_mode") boolean onlineMode
+) implements BCServerInfoSpec {
 
     @Override
     public Optional<byte[]> icon() {
@@ -56,7 +58,7 @@ public record BCServerInfov2(String name, String description, String _icon,
     }
 
     @Override
-    public List<String> playerNames() {
+    public List<String> players() {
         if (this._playerNames.isEmpty()) {
             return Collections.emptyList();
         }

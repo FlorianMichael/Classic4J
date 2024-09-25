@@ -25,9 +25,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Deprecated
-public record BCServerInfov1(Ping ping, Info info, boolean online,
-                             @SerializedName("version_category") BCVersionCategory versionCategory) implements
-        BCServerInfoSpec {
+public record BCServerInfov1(
+        Ping ping,
+        Info info,
+        boolean online,
+        @SerializedName("version_category") BCVersionCategory versionCategory
+) implements BCServerInfoSpec {
 
     @Override
     public String name() {
@@ -50,7 +53,7 @@ public record BCServerInfov1(Ping ping, Info info, boolean online,
     }
 
     @Override
-    public List<String> playerNames() {
+    public List<String> players() {
         return this.ping.players;
     }
 
@@ -70,7 +73,17 @@ public record BCServerInfov1(Ping ping, Info info, boolean online,
     }
 
     @Override
-    public String socketAddress() {
+    public String gameVersion() {
+        throw new UnsupportedOperationException("This method is not supported in API v1.");
+    }
+
+    @Override
+    public String v1Version() {
+        throw new UnsupportedOperationException("This method is not supported in API v1.");
+    }
+
+    @Override
+    public String socket() {
         return this.info.socket;
     }
 
@@ -80,13 +93,8 @@ public record BCServerInfov1(Ping ping, Info info, boolean online,
     }
 
     @Override
-    public String softwareName() {
-        return this.ping.serverName;
-    }
-
-    @Override
-    public String softwareVersion() {
-        return this.ping.serverVersion;
+    public Software software() {
+        return new Software(this.ping.serverName, this.ping.serverVersion);
     }
 
     @Override
@@ -100,13 +108,20 @@ public record BCServerInfov1(Ping ping, Info info, boolean online,
                        @SerializedName("server_version") String serverVersion,
                        List<String> players,
                        @SerializedName("last_ping_time") long lastPingTime,
+                       @SerializedName("publicc") boolean publicC,
                        @SerializedName("is_public") boolean isPublic) {
 
     }
 
-    public record Info(@SerializedName("public_id") UUID publicId, String name, String description,
-                       String version, String protocol, String socket,
-                       @SerializedName("online_mode") boolean onlineMode) {
+    public record Info(@SerializedName("public_id") UUID publicId,
+                       String name,
+                       String version,
+                       String protocol,
+                       String socket,
+                       String description,
+                       @SerializedName("locked_info") boolean lockedInfo,
+                       @SerializedName("online_mode") boolean onlineMode,
+                       boolean temporary) {
 
     }
 
