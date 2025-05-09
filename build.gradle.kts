@@ -6,7 +6,7 @@ plugins {
 }
 
 setupProject()
-setupPublishing(listOf(DeveloperInfo("FlorianMichael", "EnZaXD", "florian.michael07@gmail.com")))
+setupPublishing()
 
 repositories {
     mavenCentral()
