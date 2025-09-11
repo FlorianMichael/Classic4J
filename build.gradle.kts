@@ -13,5 +13,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.google.code.gson:gson:2.13.1")
+    compileOnly("com.google.code.gson:gson:2.13.2")
 }
