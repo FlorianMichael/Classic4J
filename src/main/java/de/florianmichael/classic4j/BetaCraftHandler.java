@@ -30,7 +30,7 @@ import java.util.function.Consumer;
 /**
  * This class provides methods to interact with the BetaCraft API. These API methods are used to request the Multiplayer Pass for a server.
  */
-public class BetaCraftHandler {
+public final class BetaCraftHandler {
 
     /**
      * The URI of the BetaCraft API.

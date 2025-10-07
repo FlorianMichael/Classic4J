@@ -24,13 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class CookieStore {
+public final class CookieStore {
 
     private final Map<String, String> values;
-
-    public CookieStore() {
-        this.values = new HashMap<>();
-    }
 
     public CookieStore(Map<String, String> values) {
         this.values = values;

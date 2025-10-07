@@ -36,7 +36,7 @@ import javax.security.auth.login.LoginException;
 /**
  * This class provides methods to interact with the ClassiCube API.
  */
-public class ClassiCubeHandler {
+public final class ClassiCubeHandler {
 
     public static final Gson GSON = new GsonBuilder().serializeNulls().create();
 

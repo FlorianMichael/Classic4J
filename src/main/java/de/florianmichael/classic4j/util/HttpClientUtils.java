@@ -23,7 +23,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
-public class HttpClientUtils {
+public final class HttpClientUtils {
 
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
 

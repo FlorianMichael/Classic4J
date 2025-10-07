@@ -21,7 +21,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class IPUtils {
+public final class IPUtils {
 
     public static String get() throws Exception {
         URL url;

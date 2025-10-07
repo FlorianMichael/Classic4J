@@ -19,14 +19,15 @@ package de.florianmichael.classic4j.model.classicube.account;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.util.CookieStore;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
  * This class represents an account on the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
  */
-public class CCAccount {
+public final class CCAccount {
 
-    public final CookieStore cookieStore = new CookieStore();
+    public final CookieStore cookieStore = new CookieStore(new HashMap<>());
     private final String username;
     private final String password;
     public String token;

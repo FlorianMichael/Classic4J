@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * This class is used to request a new authentication token from the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
  */
-public class CCAuthenticationTokenRequest {
+public final class CCAuthenticationTokenRequest {
 
     /**
      * Sends a request to the ClassiCube server list to get a new authentication token.

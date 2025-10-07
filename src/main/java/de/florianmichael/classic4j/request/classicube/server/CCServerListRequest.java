@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * This class is used to get the server list from the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
  */
-public class CCServerListRequest {
+public final class CCServerListRequest {
 
     /**
      * Sends a request to the ClassiCube server list to get the server list.

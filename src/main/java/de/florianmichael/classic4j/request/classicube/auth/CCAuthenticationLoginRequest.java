@@ -31,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * This class represents a request to log in to the ClassiCube server list. It is used by {@link ClassiCubeHandler}.
  */
-public class CCAuthenticationLoginRequest {
+public final class CCAuthenticationLoginRequest {
 
     /**
      * Sends a login request to the ClassiCube server list.

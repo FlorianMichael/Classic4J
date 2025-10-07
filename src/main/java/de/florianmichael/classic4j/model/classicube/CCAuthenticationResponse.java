@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 /**
  * This class represents the response of the ClassiCube server list when authenticating. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
  */
-public class CCAuthenticationResponse {
+public final class CCAuthenticationResponse {
 
     public final String token;
     public final String username;

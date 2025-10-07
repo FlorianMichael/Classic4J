@@ -31,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * This class is used to request information about a server from the ClassiCube server list. It is used by {@link de.florianmichael.classic4j.ClassiCubeHandler}.
  */
-public class CCServerInfoRequest {
+public final class CCServerInfoRequest {
 
     private static URI generateUri(final List<String> serverHashes) {
         final String joined = String.join(",", serverHashes);
