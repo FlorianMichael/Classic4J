@@ -23,7 +23,7 @@ The **minimum** Java version is Java **17**.
 1. [ViaFabricPlus](https://github.com/FlorianMichael/ViaFabricPlus): Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay
 
 ## Structure
-There is no main class, there are three classes in the package: **BetaCraftHandler** and **ClassiCubeHandler**, in these classes are the API requests for the respective platforms.
+The two main classes of the library are **BetaCraftHandler** and **ClassiCubeHandler**, where you can get API requests for the respective platforms.
 
 All API Requests are asynchronous and require a callback, the callback is called on the main thread, so you can safely modify the UI in the callback. 
 They are located in the **de.florianmichael.classic4j.request** package.
@@ -42,11 +42,6 @@ BetaCraftHandler.requestServerList(serverList -> {
     System.out.println(serverList.servers().size());
     System.out.println(serverList.serversOfVersion(BCVersion.ALPHA).size());
     System.out.println(serverList.serversWithOnlineMode(false)); // offline mode
-});
-
-// LEGACY AUTHENTICATION WHICH IS NOT SUPPORTED ANYMORE
-final String mpPass = BetaCraftHandler.requestMPPass("<username>", "<server ip>", 25565 /* server port */, serverId -> {
-    // You have to call the joinServer Statement in here     
 });
 
 // You can authenticate to a BetaCraft server by doing:
