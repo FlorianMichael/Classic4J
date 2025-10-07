@@ -17,7 +17,7 @@ If you just want the latest jar file you can download it from the GitHub [Action
 
 ### Requirements
 This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path. <br>
-The **minimum** Java version is Java **16**.
+The **minimum** Java version is Java **17**.
 
 ### Projects implementing Classic4J
 1. [ViaFabricPlus](https://github.com/FlorianMichael/ViaFabricPlus): Fabric mod to connect to EVERY Minecraft server version (Release, Beta, Alpha, Classic, Snapshots, Bedrock) with QoL fixes to the gameplay

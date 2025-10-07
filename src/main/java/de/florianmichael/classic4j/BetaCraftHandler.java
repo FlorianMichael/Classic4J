@@ -22,13 +22,9 @@ import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.request.betacraft.BCServerListRequest;
 import de.florianmichael.classic4j.util.HttpClientUtils;
 import de.florianmichael.classic4j.util.IPUtils;
-import java.io.InputStream;
-import java.net.InetAddress;
 import java.net.URI;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Formatter;
-import java.util.Scanner;
 import java.util.function.Consumer;
 
 /**
@@ -38,59 +34,8 @@ public class BetaCraftHandler {
 
     public static final URI BETACRAFT_ROOT_URI = URI.create("https://api.betacraft.uk");
 
-    @Deprecated
-    public static final URI GET_MP_PASS = BETACRAFT_ROOT_URI.resolve("/getmppass.jsp");
-
     /**
-     * Requests the Multiplayer Pass for a server from the BetaCraft API.
-     *
-     * @param username            The username of the player.
-     * @param ip                  The IP of the server.
-     * @param port                The port of the server.
-     * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
-     * @return The Multiplayer Pass for the server.
-     */
-    @Deprecated
-    public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface) {
-        return requestMPPass(username, ip, port, joinServerInterface, Throwable::printStackTrace);
-    }
-
-    /**
-     * Requests the Multiplayer Pass for a server from the BetaCraft API.
-     *
-     * @param username            The username of the player.
-     * @param ip                  The IP of the server.
-     * @param port                The port of the server.
-     * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
-     * @param throwableConsumer   The consumer that will be called when an error occurs.
-     * @return The Multiplayer Pass for the server.
-     */
-    @Deprecated
-    public static String requestMPPass(final String username, final String ip, final int port, final JoinServerInterface joinServerInterface, final Consumer<Throwable> throwableConsumer) {
-        try {
-            final String server = InetAddress.getByName(ip).getHostAddress() + ":" + port;
-
-            joinServerInterface.sendAuthRequest(sha1(server.getBytes()));
-
-            final InputStream connection = new URL(GET_MP_PASS + "?user=" + username + "&server=" + server).openStream();
-            Scanner scanner = new Scanner(connection);
-            StringBuilder response = new StringBuilder();
-            while (scanner.hasNext()) {
-                response.append(scanner.next());
-            }
-            connection.close();
-
-            if (response.toString().contains("FAILED") || response.toString().contains("SERVER NOT FOUND")) return "0";
-
-            return response.toString();
-        } catch (Throwable t) {
-            throwableConsumer.accept(t);
-            return "0";
-        }
-    }
-
-    /**
-     * Authenticates the player with the BetaCraft API. Replacement of {@link #requestMPPass(String, String, int, JoinServerInterface)}.
+     * Authenticates the player with the BetaCraft API.
      *
      * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
      */
@@ -99,7 +44,7 @@ public class BetaCraftHandler {
     }
 
     /**
-     * Authenticates the player with the BetaCraft API. Replacement of {@link #requestMPPass(String, String, int, JoinServerInterface, Consumer)}.
+     * Authenticates the player with the BetaCraft API.
      *
      * @param joinServerInterface The {@link JoinServerInterface} to use for the request. This is used to send the authentication request.
      */
@@ -131,28 +76,7 @@ public class BetaCraftHandler {
     }
 
     /**
-     * Requests the server list from the BetaCraft API.
-     *
-     * @param complete The consumer that will be called when the request is complete.
-     */
-    @Deprecated
-    public static void requestV1ServerList(final Consumer<BCServerList> complete) {
-        requestV1ServerList(complete, Throwable::printStackTrace);
-    }
-
-    /**
-     * Requests the server list from the BetaCraft API.
-     *
-     * @param complete          The consumer that will be called when the request is complete.
-     * @param throwableConsumer The consumer that will be called when an error occurs.
-     */
-    @Deprecated
-    public static void requestV1ServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        requestServerList(BCServerListRequest.V1, complete, throwableConsumer);
-    }
-
-    /**
-     * Requests the server list from the BetaCraft API. This method is used internally by {@link #requestV1ServerList(Consumer)} and {@link #requestV2ServerList(Consumer)}.
+     * Requests the server list from the BetaCraft API. This method is used internally by {@link #requestV2ServerList(Consumer)}.
      *
      * @param request           The {@link BCServerListRequest} to use for the request.
      * @param complete          The consumer that will be called when the request is complete.
