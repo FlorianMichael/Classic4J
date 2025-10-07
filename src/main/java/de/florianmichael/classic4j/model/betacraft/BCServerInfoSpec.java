@@ -19,8 +19,6 @@ package de.florianmichael.classic4j.model.betacraft;
 
 import de.florianmichael.classic4j.model.betacraft.impl.Player;
 import de.florianmichael.classic4j.model.betacraft.impl.Software;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,19 +42,9 @@ public interface BCServerInfoSpec {
 
     Player[] players();
 
-    @Deprecated
-    default List<String> playerNames() {
-        return Arrays.stream(players()).map(Player::username).toList();
-    }
-
     int playerLimit();
 
     boolean onlineMode();
-
-    @Deprecated
-    default String connectVersion() {
-        return v1Version();
-    }
 
     String gameVersion();
 
@@ -64,24 +52,9 @@ public interface BCServerInfoSpec {
 
     String socket();
 
-    @Deprecated
-    default String socketAddress() {
-        return socket();
-    }
-
     String protocol();
 
     BCVersionCategory versionCategory();
-
-    @Deprecated
-    default String softwareName() {
-        return software().name();
-    }
-
-    @Deprecated
-    default String softwareVersion() {
-        return software().version();
-    }
 
     Software software();
 

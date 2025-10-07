@@ -82,11 +82,11 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
     /**
      * Returns a list of servers that have the given version category.
      *
-     * @param connectVersion The connect version to filter by.
+     * @param v1Version The connect version to filter by.
      * @return A list of servers that have the given version category.
      */
-    public List<BCServerInfoSpec> withConnectVersion(final String connectVersion) {
-        return this.servers().stream().filter(s -> s.connectVersion().equals(connectVersion)).toList();
+    public List<BCServerInfoSpec> withConnectVersion(final String v1Version) {
+        return this.servers().stream().filter(s -> s.v1Version().equals(v1Version)).toList();
     }
 
 }
