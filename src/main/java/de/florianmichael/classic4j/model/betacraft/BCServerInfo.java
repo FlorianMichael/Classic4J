@@ -1,0 +1,60 @@
+/*
+ * This file is part of Classic4J - https://github.com/FlorianMichael/Classic4J
+ * Copyright (C) 2023-2025 FlorianMichael/EnZaXD <florian.michael07@gmail.com> and contributors
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package de.florianmichael.classic4j.model.betacraft;
+
+import com.google.gson.annotations.SerializedName;
+import java.util.Base64;
+import java.util.Optional;
+
+/**
+ * This class represents a server on the BetaCraft server list (API v2).
+ */
+public record BCServerInfo(String name,
+                           String description,
+                           @SerializedName("icon") String _icon,
+                           @SerializedName("is_public") boolean isPublic,
+                           Software software,
+                           @SerializedName("max_players") int playerLimit,
+                           @SerializedName("online_players") int playerCount,
+                           @SerializedName("players") Player[] players,
+                           @SerializedName("last_ping_time") long lastPingTime,
+                           @SerializedName("category") BCVersionCategory versionCategory,
+                           @SerializedName("game_version") String gameVersion,
+                           String protocol,
+                           String socket,
+                           @SerializedName("v1_version") String v1Version,
+                           @SerializedName("online_mode") boolean onlineMode
+) {
+
+    public Optional<byte[]> icon() {
+        if (this._icon.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(Base64.getDecoder().decode(this._icon));
+    }
+
+    public record Player(String username) {
+
+    }
+
+    public record Software(String name, String version) {
+
+    }
+
+}

@@ -19,24 +19,12 @@ package de.florianmichael.classic4j.request.betacraft;
 
 import com.google.gson.Gson;
 import de.florianmichael.classic4j.BetaCraftHandler;
-import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
-import de.florianmichael.classic4j.model.betacraft.impl.BCServerInfov2;
-import java.net.URI;
+import de.florianmichael.classic4j.model.betacraft.BCServerInfo;
 import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
-public enum BCServerListRequest {
-
-    V2(BetaCraftHandler.BETACRAFT_ROOT_URI.resolve("/v2/server_list"), BCServerInfov2.class);
-
-    private final URI uri;
-    private final Class<? extends BCServerInfoSpec> infoSpec;
-
-    BCServerListRequest(final URI uri, final Class<? extends BCServerInfoSpec> infoSpec) {
-        this.uri = uri;
-        this.infoSpec = infoSpec;
-    }
+public final class BCServerListRequest {
 
     /**
      * Sends the request to the BetaCraft server list and returns the response as a {@link BCServerList} object.
@@ -45,8 +33,8 @@ public enum BCServerListRequest {
      * @param gson   The Gson instance to use for the request.
      * @return A CompletableFuture containing the response.
      */
-    public CompletableFuture<BCServerList> send(final HttpClient client, final Gson gson) {
-        return BCServerList.get(client, gson, this.uri, this.infoSpec);
+    public static CompletableFuture<BCServerList> send(final HttpClient client, final Gson gson) {
+        return BCServerList.get(client, gson, BetaCraftHandler.SERVER_LIST_URI, BCServerInfo.class);
     }
 
 }

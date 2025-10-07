@@ -32,7 +32,12 @@ import java.util.function.Consumer;
  */
 public class BetaCraftHandler {
 
+    /**
+     * The URI of the BetaCraft API.
+     */
     public static final URI BETACRAFT_ROOT_URI = URI.create("https://api.betacraft.uk");
+
+    public static final URI SERVER_LIST_URI = BETACRAFT_ROOT_URI.resolve("/v2/server_list");
 
     /**
      * Authenticates the player with the BetaCraft API.
@@ -61,8 +66,8 @@ public class BetaCraftHandler {
      *
      * @param complete The consumer that will be called when the request is complete.
      */
-    public static void requestV2ServerList(final Consumer<BCServerList> complete) {
-        requestV2ServerList(complete, Throwable::printStackTrace);
+    public static void requestServerList(final Consumer<BCServerList> complete) {
+        requestServerList(complete, Throwable::printStackTrace);
     }
 
     /**
@@ -71,19 +76,8 @@ public class BetaCraftHandler {
      * @param complete          The consumer that will be called when the request is complete.
      * @param throwableConsumer The consumer that will be called when an error occurs.
      */
-    public static void requestV2ServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        requestServerList(BCServerListRequest.V2, complete, throwableConsumer);
-    }
-
-    /**
-     * Requests the server list from the BetaCraft API. This method is used internally by {@link #requestV2ServerList(Consumer)}.
-     *
-     * @param request           The {@link BCServerListRequest} to use for the request.
-     * @param complete          The consumer that will be called when the request is complete.
-     * @param throwableConsumer The consumer that will be called when an error occurs.
-     */
-    private static void requestServerList(final BCServerListRequest request, final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
-        request.send(HttpClientUtils.HTTP_CLIENT, ClassiCubeHandler.GSON).whenComplete((bcServerList, throwable) -> {
+    private static void requestServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+        BCServerListRequest.send(HttpClientUtils.HTTP_CLIENT, ClassiCubeHandler.GSON).whenComplete((bcServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
                 return;

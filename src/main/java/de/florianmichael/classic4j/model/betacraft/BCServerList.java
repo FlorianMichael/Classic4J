@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
  *
  * @param servers The servers on the BetaCraft server list.
  */
-public record BCServerList(List<BCServerInfoSpec> servers) {
+public record BCServerList(List<BCServerInfo> servers) {
 
     /**
      * Sends a request to the BetaCraft server list and returns the response as a {@link BCServerList} object.
@@ -43,17 +43,17 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
      * @param infoSpec   The class of the server info specification. This is the class that will be used to parse the JSON response.
      * @return A CompletableFuture containing the response.
      */
-    public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson, final URI uri, final Class<? extends BCServerInfoSpec> infoSpec) {
+    public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson, final URI uri, final Class<? extends BCServerInfo> infoSpec) {
         return CompletableFuture.supplyAsync(() -> new BCServerList(gson.fromJson(httpClient.sendAsync(HttpRequest.newBuilder(uri).build(), BodyHandlers.ofString()).join().body(), JsonArray.class)
             .asList()
             .stream()
-            .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
+            .map(element -> (BCServerInfo) gson.fromJson(element, infoSpec))
             .toList()
         ));
     }
 
     @Override
-    public List<BCServerInfoSpec> servers() {
+    public List<BCServerInfo> servers() {
         return Collections.unmodifiableList(this.servers);
     }
 
@@ -63,8 +63,8 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
      * @param version The version category to filter by.
      * @return A list of servers that have the given version category.
      */
-    public List<BCServerInfoSpec> serversOfVersionCategory(final BCVersionCategory version) {
-        final List<BCServerInfoSpec> serverListCopy = this.servers();
+    public List<BCServerInfo> serversOfVersionCategory(final BCVersionCategory version) {
+        final List<BCServerInfo> serverListCopy = this.servers();
 
         return serverListCopy.stream().filter(s -> s.versionCategory().equals(version)).toList();
     }
@@ -75,7 +75,7 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
      * @param on Whether the servers should be online mode or not.
      * @return A list of servers that have the given version category.
      */
-    public List<BCServerInfoSpec> serversWithOnlineMode(final boolean on) {
+    public List<BCServerInfo> serversWithOnlineMode(final boolean on) {
         return this.servers().stream().filter(s -> s.onlineMode() == on).toList();
     }
 
@@ -85,7 +85,7 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
      * @param v1Version The connect version to filter by.
      * @return A list of servers that have the given version category.
      */
-    public List<BCServerInfoSpec> withConnectVersion(final String v1Version) {
+    public List<BCServerInfo> withConnectVersion(final String v1Version) {
         return this.servers().stream().filter(s -> s.v1Version().equals(v1Version)).toList();
     }
 
