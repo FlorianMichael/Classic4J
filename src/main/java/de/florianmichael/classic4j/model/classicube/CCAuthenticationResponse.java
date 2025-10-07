@@ -18,7 +18,6 @@
 package de.florianmichael.classic4j.model.classicube;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
-
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -41,6 +40,14 @@ public class CCAuthenticationResponse {
     }
 
     /**
+     * @param json The JSON string to create the {@link CCAuthenticationResponse} from.
+     * @return The created {@link CCAuthenticationResponse}.
+     */
+    public static CCAuthenticationResponse fromJson(final String json) {
+        return ClassiCubeHandler.GSON.fromJson(json, CCAuthenticationResponse.class);
+    }
+
+    /**
      * @return Whether the {@link CCAuthenticationResponse} contains any errors.
      */
     public boolean shouldError() {
@@ -49,6 +56,7 @@ public class CCAuthenticationResponse {
 
     /**
      * Returns a string containing all errors separated by a new line.
+     *
      * @return The error display.
      */
     public String getErrorDisplay() {
@@ -71,14 +79,6 @@ public class CCAuthenticationResponse {
      */
     public boolean mfaRequired() {
         return this.errors().stream().anyMatch(e -> e == CCError.LOGIN_CODE);
-    }
-
-    /**
-     * @param json The JSON string to create the {@link CCAuthenticationResponse} from.
-     * @return The created {@link CCAuthenticationResponse}.
-     */
-    public static CCAuthenticationResponse fromJson(final String json) {
-        return ClassiCubeHandler.GSON.fromJson(json, CCAuthenticationResponse.class);
     }
 
 }

@@ -26,18 +26,21 @@ public interface LoginProcessHandler {
 
     /**
      * Handles the MFA process. This is called when the account has MFA enabled. The user should be prompted to enter the MFA code.
+     *
      * @param account The account that has MFA enabled.
      */
     void handleMfa(final CCAccount account);
 
     /**
      * Handles the successful login. This is called when the login was successful.
+     *
      * @param account The account that was used for the login.
      */
     void handleSuccessfulLogin(final CCAccount account);
 
     /**
      * Handles the failed login. This is called when the login failed.
+     *
      * @param throwable The throwable that caused the login to fail.
      */
     void handleException(final Throwable throwable);

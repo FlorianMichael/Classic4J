@@ -21,9 +21,8 @@ import de.florianmichael.classic4j.ClassiCubeHandler;
 import de.florianmichael.classic4j.model.classicube.CCAuthenticationResponse;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.model.classicube.account.CCAuthenticationData;
-import de.florianmichael.classic4j.util.Parameter;
 import de.florianmichael.classic4j.util.HttpClientUtils;
-
+import de.florianmichael.classic4j.util.Parameter;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -36,26 +35,27 @@ public class CCAuthenticationLoginRequest {
 
     /**
      * Sends a login request to the ClassiCube server list.
+     *
      * @param account          The account to log in with.
      * @param previousResponse The previous response.
      * @param loginCode        The login code.
-     * @return                 The response.
+     * @return The response.
      */
     public static CompletableFuture<CCAuthenticationResponse> send(final HttpClient client, final CCAccount account, final CCAuthenticationResponse previousResponse, final String loginCode) {
         return CompletableFuture.supplyAsync(() -> {
             final CCAuthenticationData authenticationData = new CCAuthenticationData(account.username(), account.password(), previousResponse.token, loginCode);
 
             final String requestBody = HttpClientUtils.createRequestBody(
-                    new Parameter("username", authenticationData.username()),
-                    new Parameter("password", authenticationData.password()),
-                    new Parameter("token", authenticationData.previousToken()),
-                    new Parameter("login_code", authenticationData.loginCode())
+                new Parameter("username", authenticationData.username()),
+                new Parameter("password", authenticationData.password()),
+                new Parameter("token", authenticationData.previousToken()),
+                new Parameter("login_code", authenticationData.loginCode())
             );
 
             final HttpRequest request = HttpClientUtils.buildWithCookies(account.cookieStore, HttpRequest.newBuilder()
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .uri(ClassiCubeHandler.AUTHENTICATION_URI)
-                    .header("content-type", "application/x-www-form-urlencoded"));
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .uri(ClassiCubeHandler.AUTHENTICATION_URI)
+                .header("content-type", "application/x-www-form-urlencoded"));
 
             final HttpResponse<String> response = client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).join();
 

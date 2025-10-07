@@ -23,7 +23,6 @@ import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.model.betacraft.impl.BCServerInfov1;
 import de.florianmichael.classic4j.model.betacraft.impl.BCServerInfov2;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;

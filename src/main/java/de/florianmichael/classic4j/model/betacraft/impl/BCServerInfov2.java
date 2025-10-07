@@ -21,7 +21,6 @@ package de.florianmichael.classic4j.model.betacraft.impl;
 import com.google.gson.annotations.SerializedName;
 import de.florianmichael.classic4j.model.betacraft.BCServerInfoSpec;
 import de.florianmichael.classic4j.model.betacraft.BCVersionCategory;
-
 import java.util.Base64;
 import java.util.Optional;
 

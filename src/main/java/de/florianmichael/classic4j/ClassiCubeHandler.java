@@ -20,19 +20,18 @@ package de.florianmichael.classic4j;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.florianmichael.classic4j.api.LoginProcessHandler;
+import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.request.classicube.auth.CCAuthenticationLoginRequest;
 import de.florianmichael.classic4j.request.classicube.auth.CCAuthenticationTokenRequest;
 import de.florianmichael.classic4j.request.classicube.server.CCServerInfoRequest;
 import de.florianmichael.classic4j.request.classicube.server.CCServerListRequest;
-import de.florianmichael.classic4j.model.classicube.server.CCServerList;
-import de.florianmichael.classic4j.model.classicube.account.CCAccount;
 import de.florianmichael.classic4j.util.HttpClientUtils;
-
-import javax.security.auth.login.LoginException;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
+import javax.security.auth.login.LoginException;
 
 /**
  * This class provides methods to interact with the ClassiCube API.
@@ -52,6 +51,7 @@ public class ClassiCubeHandler {
 
     /**
      * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     *
      * @param account  The account to use for the request.
      * @param complete The consumer that will be called when the request is complete.
      */
@@ -61,6 +61,7 @@ public class ClassiCubeHandler {
 
     /**
      * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     *
      * @param account           The account to use for the request.
      * @param complete          The consumer that will be called when the request is complete.
      * @param throwableConsumer The consumer that will be called when an error occurs.
@@ -77,9 +78,10 @@ public class ClassiCubeHandler {
 
     /**
      * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
-     * @param account     The account to use for the request.
-     * @param serverHash  The server hash to request.
-     * @param complete    The consumer that will be called when the request is complete.
+     *
+     * @param account    The account to use for the request.
+     * @param serverHash The server hash to request.
+     * @param complete   The consumer that will be called when the request is complete.
      */
     public static void requestServerInfo(final CCAccount account, final String serverHash, final Consumer<CCServerList> complete) {
         requestServerInfo(account, serverHash, complete, Throwable::printStackTrace);
@@ -110,6 +112,7 @@ public class ClassiCubeHandler {
 
     /**
      * Requests the ClassiCube server list and returns it as a {@link CCServerList} object.
+     *
      * @param account           The account to use for the request.
      * @param serverHashes      The server hashes to request.
      * @param complete          The consumer that will be called when the request is complete.

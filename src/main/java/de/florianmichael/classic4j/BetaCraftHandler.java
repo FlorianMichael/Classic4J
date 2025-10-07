@@ -22,12 +22,10 @@ import de.florianmichael.classic4j.model.betacraft.BCServerList;
 import de.florianmichael.classic4j.request.betacraft.BCServerListRequest;
 import de.florianmichael.classic4j.util.HttpClientUtils;
 import de.florianmichael.classic4j.util.IPUtils;
-
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Formatter;
 import java.util.Scanner;

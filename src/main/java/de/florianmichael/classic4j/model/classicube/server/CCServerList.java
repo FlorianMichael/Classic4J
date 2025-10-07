@@ -18,11 +18,11 @@
 package de.florianmichael.classic4j.model.classicube.server;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
-
 import java.util.List;
 
 /**
  * This class represents a list of servers on the ClassiCube server list. It is used by {@link ClassiCubeHandler}.
+ *
  * @param servers The servers on the ClassiCube server list.
  */
 public record CCServerList(List<CCServerInfo> servers) {

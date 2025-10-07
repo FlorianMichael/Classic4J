@@ -18,10 +18,9 @@
 package de.florianmichael.classic4j.request.classicube.server;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.util.HttpClientUtils;
-
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;

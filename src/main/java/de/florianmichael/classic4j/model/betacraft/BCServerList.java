@@ -19,14 +19,12 @@ package de.florianmichael.classic4j.model.betacraft;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -47,10 +45,10 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
      */
     public static CompletableFuture<BCServerList> get(final HttpClient httpClient, final Gson gson, final URI uri, final Class<? extends BCServerInfoSpec> infoSpec) {
         return CompletableFuture.supplyAsync(() -> new BCServerList(gson.fromJson(httpClient.sendAsync(HttpRequest.newBuilder(uri).build(), BodyHandlers.ofString()).join().body(), JsonArray.class)
-                .asList()
-                .stream()
-                .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
-                .toList()
+            .asList()
+            .stream()
+            .map(element -> (BCServerInfoSpec) gson.fromJson(element, infoSpec))
+            .toList()
         ));
     }
 
@@ -89,26 +87,6 @@ public record BCServerList(List<BCServerInfoSpec> servers) {
      */
     public List<BCServerInfoSpec> withConnectVersion(final String connectVersion) {
         return this.servers().stream().filter(s -> s.connectVersion().equals(connectVersion)).toList();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BCServerList that = (BCServerList) o;
-        return Objects.equals(servers, that.servers);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(servers);
-    }
-
-    @Override
-    public String toString() {
-        return "BCServerList{" +
-                "servers=" + servers +
-                '}';
     }
 
 }

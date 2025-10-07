@@ -18,10 +18,9 @@
 package de.florianmichael.classic4j.request.classicube.server;
 
 import de.florianmichael.classic4j.ClassiCubeHandler;
-import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.model.classicube.account.CCAccount;
+import de.florianmichael.classic4j.model.classicube.server.CCServerList;
 import de.florianmichael.classic4j.util.HttpClientUtils;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -42,9 +41,10 @@ public class CCServerInfoRequest {
 
     /**
      * Sends a request to the ClassiCube server list to get information about the given servers. The response contains information about the server, such as the name, the MOTD, the number of players, etc.
+     *
      * @param account      The account to use for the request.
      * @param serverHashes The hashes of the servers to get information about.
-     * @return             A CompletableFuture containing the response.
+     * @return A CompletableFuture containing the response.
      */
     public static CompletableFuture<CCServerList> send(final HttpClient client, final CCAccount account, final List<String> serverHashes) {
         return CompletableFuture.supplyAsync(() -> {

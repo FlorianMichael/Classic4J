@@ -19,7 +19,6 @@ package de.florianmichael.classic4j.model.classicube.account;
 
 import com.google.gson.JsonObject;
 import de.florianmichael.classic4j.util.CookieStore;
-
 import java.util.Objects;
 
 /**
@@ -28,10 +27,9 @@ import java.util.Objects;
 public class CCAccount {
 
     public final CookieStore cookieStore = new CookieStore();
-
-    public String token;
     private final String username;
     private final String password;
+    public String token;
 
     public CCAccount(final String username, final String password) {
         this(null, username, password);
@@ -44,7 +42,21 @@ public class CCAccount {
     }
 
     /**
+     * Creates a new {@link CCAccount} from the given JSON object.
+     *
+     * @param object The JSON object to create the {@link CCAccount} from.
+     * @return The created {@link CCAccount}.
+     */
+    public static CCAccount fromJson(final JsonObject object) {
+        String token = null;
+        if (object.has("token")) token = object.get("token").getAsString();
+
+        return new CCAccount(token, object.get("username").getAsString(), object.get("password").getAsString());
+    }
+
+    /**
      * Converts this {@link CCAccount} to a JSON object.
+     *
      * @return The JSON object.
      */
     public JsonObject asJson() {
@@ -55,18 +67,6 @@ public class CCAccount {
         object.addProperty("password", this.password);
 
         return object;
-    }
-
-    /**
-     * Creates a new {@link CCAccount} from the given JSON object.
-     * @param object The JSON object to create the {@link CCAccount} from.
-     * @return The created {@link CCAccount}.
-     */
-    public static CCAccount fromJson(final JsonObject object) {
-        String token = null;
-        if (object.has("token")) token = object.get("token").getAsString();
-
-        return new CCAccount(token, object.get("username").getAsString(), object.get("password").getAsString());
     }
 
     public String token() {
@@ -97,10 +97,10 @@ public class CCAccount {
     @Override
     public String toString() {
         return "CCAccount{" +
-                "token='" + token + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+            "token='" + token + '\'' +
+            ", username='" + username + '\'' +
+            ", password='" + password + '\'' +
+            '}';
     }
 
 }

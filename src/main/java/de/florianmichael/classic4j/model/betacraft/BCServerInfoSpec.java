@@ -19,7 +19,6 @@ package de.florianmichael.classic4j.model.betacraft;
 
 import de.florianmichael.classic4j.model.betacraft.impl.Player;
 import de.florianmichael.classic4j.model.betacraft.impl.Software;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

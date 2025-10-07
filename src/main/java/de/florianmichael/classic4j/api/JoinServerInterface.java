@@ -19,12 +19,14 @@ package de.florianmichael.classic4j.api;
 
 /**
  * This interface is used to send the authentication request to the server. This is used by the {@link de.florianmichael.classic4j.ClassiCubeHandler}.
+ *
  * @see de.florianmichael.classic4j.ClassiCubeHandler
  */
 public interface JoinServerInterface {
 
     /**
      * Sends the authentication request to the server.
+     *
      * @param serverId The server ID to use for the request.
      */
     void sendAuthRequest(final String serverId);
