@@ -76,7 +76,7 @@ public final class BetaCraftHandler {
      * @param complete          The consumer that will be called when the request is complete.
      * @param throwableConsumer The consumer that will be called when an error occurs.
      */
-    private static void requestServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
+    public static void requestServerList(final Consumer<BCServerList> complete, final Consumer<Throwable> throwableConsumer) {
         BCServerListRequest.send(HttpClientUtils.HTTP_CLIENT, ClassiCubeHandler.GSON).whenComplete((bcServerList, throwable) -> {
             if (throwable != null) {
                 throwableConsumer.accept(throwable);
