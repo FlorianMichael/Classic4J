@@ -9,11 +9,17 @@ If you just want to talk or need help with Classic4J feel free to join my
 
 ## How to add this to your project
 ### Gradle/Maven
-To use Classic4J with Gradle/Maven you can use [Maven Central](https://mvnrepository.com/artifact/de.florianmichael/Classic4J), [Lenni0451's Maven](https://maven.lenni0451.net/#/releases/de/florianmichael/Classic4J) or [Jitpack](https://jitpack.io/#FlorianMichael/Classic4J).  
+
+To use Classic4J with Gradle/Maven you can
+use [the Maven Central repository](https://mvnrepository.com/artifact/de.florianmichael/Classic4J)
+or [my own repository](https://maven.florianmichael.de/#/releases/de/florianmichael/Classic4J).  
 You can also find instructions how to implement it into your build script there.
 
 ### Jar File
-If you just want the latest jar file you can download it from the GitHub [Actions](https://github.com/FlorianMichael/Classic4J/actions) or use the [Release](https://github.com/FlorianMichael/Classic4J/releases).
+
+If you just want the latest jar file you can download it
+from [my build server](https://build.florianmichael.de/job/Classic4J), [GitHub Actions](https://github.com/FlorianMichael/Classic4J/actions)
+or use the [releases tab](https://github.com/FlorianMichael/Classic4J/releases).
 
 ### Requirements
 This library requires you to have [Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.10.1) in your class path. <br>
